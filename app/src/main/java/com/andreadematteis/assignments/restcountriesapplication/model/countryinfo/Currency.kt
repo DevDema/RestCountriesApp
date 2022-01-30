@@ -3,7 +3,7 @@ package com.andreadematteis.assignments.restcountriesapplication.model.countryin
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-class Currency(
+data class Currency(
     @SerializedName("name")
     @Expose
     val name: String,

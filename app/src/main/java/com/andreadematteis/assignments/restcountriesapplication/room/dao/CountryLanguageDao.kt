@@ -3,11 +3,11 @@ package com.andreadematteis.assignments.restcountriesapplication.room.dao
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
-import com.andreadematteis.assignments.restcountriesapplication.room.model.CountryCurrencyEntity
+import com.andreadematteis.assignments.restcountriesapplication.room.model.CountryLanguageEntity
 
 @Dao
-interface CountryCurrencyDao {
+interface CountryLanguageDao {
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
-    suspend fun insertCountryCurrency(country: CountryCurrencyEntity): Long
+    suspend fun insertCountryLanguage(countryLanguageEntity: CountryLanguageEntity): Long
 }

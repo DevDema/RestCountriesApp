@@ -10,11 +10,11 @@ import com.andreadematteis.assignments.restcountriesapplication.room.model.Curre
 interface CurrencyDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertCurrency(country: CurrencyEntity): Long
+    suspend fun insertCurrency(country: CurrencyEntity): Long
 
     @Query("SELECT * FROM currencies_table WHERE currencies_table.currency_id == :id")
-    fun getCurrency(id: Int): CurrencyEntity
+    suspend fun getCurrency(id: Int): CurrencyEntity
 
     @Query("SELECT * FROM currencies_table")
-    fun getAll(): List<CurrencyEntity>
+    suspend fun getAll(): List<CurrencyEntity>
 }

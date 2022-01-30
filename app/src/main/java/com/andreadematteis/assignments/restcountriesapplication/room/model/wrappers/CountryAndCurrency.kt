@@ -1,8 +1,11 @@
-package com.andreadematteis.assignments.restcountriesapplication.room.model
+package com.andreadematteis.assignments.restcountriesapplication.room.model.wrappers
 
 import androidx.room.Embedded
 import androidx.room.Junction
 import androidx.room.Relation
+import com.andreadematteis.assignments.restcountriesapplication.room.model.CountryCurrencyEntity
+import com.andreadematteis.assignments.restcountriesapplication.room.model.CountryEntity
+import com.andreadematteis.assignments.restcountriesapplication.room.model.CurrencyEntity
 
 class CountryAndCurrency(
     @Embedded val countryEntity: CountryEntity,

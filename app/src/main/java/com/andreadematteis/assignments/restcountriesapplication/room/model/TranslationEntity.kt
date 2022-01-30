@@ -14,7 +14,7 @@ import kotlinx.parcelize.Parcelize
 )
 @Parcelize
 class TranslationEntity(
-    @ColumnInfo(name = "id")
+    @ColumnInfo(name = "translation_id")
     @PrimaryKey(autoGenerate = true)
     val id: Long,
     @ColumnInfo(name = "identifier")

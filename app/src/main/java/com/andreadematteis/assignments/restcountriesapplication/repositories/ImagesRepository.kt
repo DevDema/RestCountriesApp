@@ -1,4 +1,4 @@
-package com.andreadematteis.assignments.restcountriesapplication.network.repositories
+package com.andreadematteis.assignments.restcountriesapplication.repositories
 
 import android.content.Context
 import android.graphics.drawable.BitmapDrawable

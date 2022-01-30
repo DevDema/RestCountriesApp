@@ -6,6 +6,8 @@ import com.google.gson.annotations.SerializedName
 import com.google.gson.annotations.Expose
 
 data class Country(
+    @Transient
+    val roomId: Long,
     @SerializedName("altSpellings")
     @Expose
     val altSpellings: List<String>,
@@ -53,7 +55,7 @@ data class Country(
     val latlng: List<Double>,
     @SerializedName("name")
     @Expose
-    val name: Name,
+    var name: Name,
     @SerializedName("population")
     @Expose
     val population: Int,

@@ -39,6 +39,7 @@ fun Country.toEntity(): CountryEntity = CountryEntity(
 )
 
 fun CountryEntity.toModel() = Country(
+    id,
     altSpellings,
     area,
     borders,

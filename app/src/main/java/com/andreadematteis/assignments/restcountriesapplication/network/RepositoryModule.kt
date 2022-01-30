@@ -1,11 +1,10 @@
 package com.andreadematteis.assignments.restcountriesapplication.network
 
 import coil.ImageLoader
-import com.andreadematteis.assignments.restcountriesapplication.network.repositories.CountryRepository
-import com.andreadematteis.assignments.restcountriesapplication.network.repositories.ImagesRepository
+import com.andreadematteis.assignments.restcountriesapplication.repositories.CountryRepository
+import com.andreadematteis.assignments.restcountriesapplication.repositories.ImagesRepository
 import com.andreadematteis.assignments.restcountriesapplication.network.services.CountriesService
 import com.andreadematteis.assignments.restcountriesapplication.room.CountriesDatabase
-import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

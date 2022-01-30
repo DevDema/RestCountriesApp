@@ -14,7 +14,7 @@ import androidx.room.PrimaryKey
         ),
         ForeignKey(
             entity = TranslationEntity::class,
-            parentColumns = arrayOf("id"),
+            parentColumns = arrayOf("translation_id"),
             childColumns = arrayOf("translation_id")
         )
     ])
