@@ -18,7 +18,7 @@ class CountriesListFragment: Fragment() {
     ): View {
         super.onCreateView(inflater, container, savedInstanceState)
 
-        binding = FragmentListCountriesBinding.inflate(inflater, container, true)
+        binding = FragmentListCountriesBinding.inflate(inflater, container, false)
         return binding.root
     }
 }
