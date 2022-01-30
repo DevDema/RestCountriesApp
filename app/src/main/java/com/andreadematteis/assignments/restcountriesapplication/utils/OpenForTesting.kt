@@ -1,0 +1,3 @@
+package com.andreadematteis.assignments.restcountriesapplication.utils
+
+annotation class OpenForTesting
