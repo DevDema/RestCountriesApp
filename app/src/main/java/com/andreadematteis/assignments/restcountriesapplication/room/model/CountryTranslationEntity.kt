@@ -1,9 +1,6 @@
 package com.andreadematteis.assignments.restcountriesapplication.room.model
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.PrimaryKey
+import androidx.room.*
 
 @Entity(tableName = "country_translation_table",
     foreignKeys = [
@@ -17,6 +14,9 @@ import androidx.room.PrimaryKey
             parentColumns = arrayOf("translation_id"),
             childColumns = arrayOf("translation_id")
         )
+    ],
+    indices = [
+        Index("country_id", "translation_id")
     ])
 class CountryTranslationEntity(
     @PrimaryKey(autoGenerate = true)
