@@ -8,6 +8,7 @@ import com.andreadematteis.assignments.restcountriesapplication.model.countryinf
 import com.andreadematteis.assignments.restcountriesapplication.network.services.CountriesService
 import com.andreadematteis.assignments.restcountriesapplication.room.CountriesDatabase
 import com.andreadematteis.assignments.restcountriesapplication.room.model.CountryCurrencyEntity
+import com.andreadematteis.assignments.restcountriesapplication.room.model.CountryEntity
 import com.andreadematteis.assignments.restcountriesapplication.room.model.CountryLanguageEntity
 import com.andreadematteis.assignments.restcountriesapplication.room.model.CountryTranslationEntity
 import com.andreadematteis.assignments.restcountriesapplication.room.utils.*
@@ -17,25 +18,19 @@ class CountryRepository(
     private val roomDatabase: CountriesDatabase
 ) {
 
-    suspend fun fetchCountries(): Collection<Country> = countriesService.getAll()
+    suspend fun fetchCountries(): List<Country> = countriesService.getAll()
 
-    suspend fun fetchAndSaveCountries(): Map<Country, Long> = mutableMapOf<Country, Long>().apply {
-        countriesService.getAll().forEach {
-            val savedCountryId = saveCountryToDatabase(it).also { id ->
-                if (id == -1L) {
-                    Log.w(javaClass.simpleName, "Failed to save country ${it.name.common}, Room returned -1.")
-                } else if (id == -2L) {
-                    Log.i(javaClass.simpleName, "Ignoring country ${it.name.common}, no changes detected.")
-                }
+    suspend fun removeCountry(country: CountryEntity): Int =
+        roomDatabase.countriesDao().removeCountry(country).also {
+            if (it != 1) {
+                Log.w(
+                    javaClass.simpleName,
+                    "No affected rows in delete country: ${country.name}"
+                )
             }
-
-
-
-            put(it, savedCountryId)
         }
-    }
 
-    suspend fun saveCountryToDatabase(country: Country): Long {
+    suspend fun saveCountry(country: Country): Long {
         kotlin.runCatching {
             val countryId = roomDatabase.countriesDao().insertOrUpdateCountry(country.toEntity())
 
@@ -44,7 +39,7 @@ class CountryRepository(
                 ?.forEach {
                     val currencyId = roomDatabase.currencyDao().insertCurrency(it)
 
-                    if(currencyId == -1L) {
+                    if (currencyId == -1L) {
                         return@forEach
                     }
 
@@ -70,7 +65,7 @@ class CountryRepository(
                 ?.forEach {
                     val languageId = roomDatabase.languagesDao().insertLanguage(it)
 
-                    if(languageId == -1L) {
+                    if (languageId == -1L) {
                         return@forEach
                     }
 
@@ -96,7 +91,7 @@ class CountryRepository(
                 ?.forEach {
                     val translationId = roomDatabase.translationDao().insertTranslation(it)
 
-                    if(translationId == -1L) {
+                    if (translationId == -1L) {
                         return@forEach
                     }
 

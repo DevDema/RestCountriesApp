@@ -1,6 +1,7 @@
 package com.andreadematteis.assignments.restcountriesapplication.room.dao
 
 import androidx.room.*
+import com.andreadematteis.assignments.restcountriesapplication.model.Country
 import com.andreadematteis.assignments.restcountriesapplication.room.model.wrappers.CountryAndCurrency
 import com.andreadematteis.assignments.restcountriesapplication.room.model.CountryEntity
 import com.andreadematteis.assignments.restcountriesapplication.room.model.wrappers.CountryAndAll
@@ -55,4 +56,7 @@ interface CountryDao {
 
     @Query("SELECT * FROM countries_table WHERE countries_table.name == :name")
     suspend fun getCountry(name: String): CountryEntity?
+
+    @Delete
+    suspend fun removeCountry(country: CountryEntity): Int
 }
