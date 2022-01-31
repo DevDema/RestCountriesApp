@@ -3,6 +3,7 @@ package com.andreadematteis.assignments.restcountriesapplication.view.loading
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.*
+import androidx.work.*
 import com.andreadematteis.assignments.restcountriesapplication.R
 import com.andreadematteis.assignments.restcountriesapplication.model.Country
 import com.andreadematteis.assignments.restcountriesapplication.repositories.CountryRepository
@@ -10,6 +11,7 @@ import com.andreadematteis.assignments.restcountriesapplication.room.model.Count
 import com.andreadematteis.assignments.restcountriesapplication.room.utils.toEntity
 import com.andreadematteis.assignments.restcountriesapplication.room.utils.toModel
 import com.andreadematteis.assignments.restcountriesapplication.utils.toTwoDecimals
+import com.andreadematteis.assignments.restcountriesapplication.worker.DownloadImagesForCountryWorker
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -45,6 +47,7 @@ class LoadingViewModel @Inject constructor(
                 withContext(Dispatchers.IO) {
                     fetchAndSaveCountries()
 
+                    startWorker(countriesRepository.getAll())
                     delay(1000L)
                 }
 
@@ -127,6 +130,28 @@ class LoadingViewModel @Inject constructor(
                 mutableProgressPercentage.value = 100
             }
         }
+    }
+
+    private fun startWorker(countryList: List<CountryEntity>) {
+        val data = Data.Builder().apply {
+            countryList.forEach {
+                putString(it.id.toString(), it.flagsSvg)
+            }
+        }.build()
+
+        WorkManager.getInstance(getApplication())
+            .beginUniqueWork(
+                "ImageDownloadWork",
+                ExistingWorkPolicy.REPLACE,
+                OneTimeWorkRequest.Builder(DownloadImagesForCountryWorker::class.java)
+                    .setConstraints(
+                        Constraints.Builder()
+                            .setRequiredNetworkType(NetworkType.CONNECTED)
+                            .build()
+                    )
+                    .setInputData(data)
+                    .build()
+            ).enqueue()
     }
 
     private fun getCountriesToSave(
