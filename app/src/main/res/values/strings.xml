@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">RestCountriesApplication</string>
+    <string name="app_name">Restcountries Application</string>
     <string name="countries_fragment_title">Countries list</string>
 </resources>

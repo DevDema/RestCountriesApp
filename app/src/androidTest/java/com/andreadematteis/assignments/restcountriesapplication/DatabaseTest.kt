@@ -82,7 +82,7 @@ class DatabaseTest {
         }
 
         runBlocking {
-            countryRepository.saveCountry(country)
+            countryRepository.saveCountryToDatabase(country)
 
             val countries = countryRepository.getAll()
 
@@ -149,7 +149,7 @@ class DatabaseTest {
         }
 
         runBlocking {
-            countryRepository.saveCountry(country)
+            countryRepository.saveCountryToDatabase(country)
 
             val countries = countryRepository.getAll()
 
@@ -188,7 +188,7 @@ class DatabaseTest {
             val savedIds = mutableListOf<Long>()
 
             repeat(Random(256).nextInt(2, 10)) {
-                savedIds.add(countryRepository.saveCountry(country))
+                savedIds.add(countryRepository.saveCountryToDatabase(country))
             }
 
             assertEquals(savedIds.size, savedIds.groupBy { it }.size)
@@ -277,7 +277,7 @@ class DatabaseTest {
         }
 
         runBlocking {
-            countryRepository.saveCountry(country)
+            countryRepository.saveCountryToDatabase(country)
 
             val countries = countryRepository.getAll()
 
@@ -328,7 +328,7 @@ class DatabaseTest {
         }
 
         runBlocking {
-            countryRepository.saveCountry(country)
+            countryRepository.saveCountryToDatabase(country)
 
             val countries = countryRepository.getAll()
 

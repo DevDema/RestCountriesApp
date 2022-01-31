@@ -1,5 +1,7 @@
 package com.andreadematteis.assignments.restcountriesapplication.repositories
 
+import android.util.Log
+import androidx.annotation.VisibleForTesting
 import com.andreadematteis.assignments.restcountriesapplication.model.Country
 import com.andreadematteis.assignments.restcountriesapplication.model.countryinfo.Currency
 import com.andreadematteis.assignments.restcountriesapplication.model.countryinfo.Translation
@@ -9,13 +11,22 @@ import com.andreadematteis.assignments.restcountriesapplication.room.model.Count
 import com.andreadematteis.assignments.restcountriesapplication.room.model.CountryLanguageEntity
 import com.andreadematteis.assignments.restcountriesapplication.room.model.CountryTranslationEntity
 import com.andreadematteis.assignments.restcountriesapplication.room.utils.*
+import java.util.logging.Logger
 
 class CountryRepository(
     private val countriesService: CountriesService,
     private val roomDatabase: CountriesDatabase
 ) {
 
-    suspend fun saveCountry(country: Country): Long {
+    suspend fun fetchCountries(): Collection<Country> = countriesService.getAll()
+
+    suspend fun fetchAndSaveCountries(): Collection<Country> = countriesService.getAll().onEach {
+        if(saveCountryToDatabase(it) == -1L) {
+            Log.w(javaClass.simpleName, "Failed to save country ${it.name}, Room returned -1.")
+        }
+    }
+
+    suspend fun saveCountryToDatabase(country: Country): Long {
         val countryId = roomDatabase.countriesDao().insertCountry(country.toEntity())
 
         country.currencies
@@ -102,6 +113,7 @@ class CountryRepository(
             }
         }.distinctBy { it.roomId }
 
+    @VisibleForTesting
     suspend fun getAllWithCurrency() = roomDatabase
         .countriesDao()
         .getCountriesWithCurrency()
@@ -120,6 +132,7 @@ class CountryRepository(
             }
         }.distinctBy { it.roomId }
 
+    @VisibleForTesting
     suspend fun getAllWithLanguages() = roomDatabase
         .countriesDao()
         .getCountriesWithLanguages()
@@ -136,6 +149,7 @@ class CountryRepository(
             }
         }.distinctBy { it.roomId }
 
+    @VisibleForTesting
     suspend fun getAllWithTranslations() = roomDatabase
         .countriesDao()
         .getCountriesWithTranslation()
