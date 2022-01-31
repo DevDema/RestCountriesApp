@@ -5,10 +5,10 @@ import com.andreadematteis.assignments.restcountriesapplication.room.model.Trans
 
 object TranslationConverters {
 
-    fun toEntity(currency: Pair<String, Translation>) = TranslationEntity(
+    fun toEntity(translation: Pair<String?, Translation?>?) = TranslationEntity(
         0,
-        currency.first,
-        currency.second.common,
-        currency.second.official
+        translation?.first ?: "",
+        translation?.second?.common ?: "",
+        translation?.second?.official ?: ""
     )
 }

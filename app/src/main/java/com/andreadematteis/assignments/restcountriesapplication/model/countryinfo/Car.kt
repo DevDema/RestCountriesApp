@@ -7,8 +7,8 @@ import com.google.gson.annotations.Expose
 data class Car(
     @SerializedName("side")
     @Expose
-    val side: String,
+    val side: String?,
     @SerializedName("signs")
     @Expose
-    val signs: List<String>
+    val signs: List<String>?
 )

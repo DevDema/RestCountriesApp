@@ -10,7 +10,7 @@ data class Name(
     val common: String,
     @SerializedName("nativeName")
     @Expose
-    val nativeName: Pair<String, String>,
+    val nativeName: Pair<String?, String?>?,
     @SerializedName("official")
     @Expose
     val official: String

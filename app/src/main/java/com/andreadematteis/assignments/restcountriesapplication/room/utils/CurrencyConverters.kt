@@ -5,10 +5,10 @@ import com.andreadematteis.assignments.restcountriesapplication.room.model.Curre
 
 object CurrencyConverters {
 
-    fun toEntity(currency: Pair<String, Currency>) = CurrencyEntity(
+    fun toEntity(currency: Pair<String?, Currency?>?) = CurrencyEntity(
         0,
-        currency.first,
-        currency.second.name,
-        currency.second.symbol
+        currency?.first ?: "",
+        currency?.second?.name ?: "",
+        currency?.second?.symbol ?: ""
     )
 }

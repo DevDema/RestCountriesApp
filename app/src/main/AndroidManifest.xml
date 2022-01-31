@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
         package="com.andreadematteis.assignments.restcountriesapplication">
 
+    <uses-permission android:name="android.permission.INTERNET" />
     <application
             android:allowBackup="true"
             android:name=".RestCountriesApplication"
@@ -11,8 +12,9 @@
             android:supportsRtl="true"
             android:theme="@style/Theme.RestCountriesApplication" >
         <activity
-                android:name=".view.CountriesActivity"
+                android:name=".view.loading.LoadingActivity"
                 android:configChanges="orientation"
+                android:theme="@style/Theme.RestCountriesApplication.NoActionBar"
                 android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

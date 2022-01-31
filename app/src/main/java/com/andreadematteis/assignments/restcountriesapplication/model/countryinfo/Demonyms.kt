@@ -7,5 +7,5 @@ import com.google.gson.annotations.Expose
 data class Demonyms(
     @SerializedName("eng")
     @Expose
-    val eng: DemonymEnglish
+    val eng: DemonymEnglish?
 )

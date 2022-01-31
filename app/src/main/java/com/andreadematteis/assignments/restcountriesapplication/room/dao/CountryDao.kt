@@ -15,6 +15,21 @@ interface CountryDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCountry(country: CountryEntity): Long
 
+    @Update
+    suspend fun updateCountry(country: CountryEntity): Int
+
+    @Transaction
+    suspend fun insertOrUpdateCountry(country: CountryEntity): Long {
+        val currentCountry = getCountry(country.name)
+
+        return when {
+            currentCountry == null -> insertCountry(country)
+            currentCountry != country -> updateCountry(country).toLong()
+            else -> -2L
+
+        }
+    }
+
     @RewriteQueriesToDropUnusedColumns
     @Transaction
     @Query("SELECT * FROM countries_table INNER JOIN country_currency_table ON countries_table.country_id = country_currency_table.country_id")
@@ -37,4 +52,7 @@ interface CountryDao {
 
     @Query("SELECT * FROM countries_table")
     suspend fun getCountries(): List<CountryEntity>
+
+    @Query("SELECT * FROM countries_table WHERE countries_table.name == :name")
+    suspend fun getCountry(name: String): CountryEntity?
 }

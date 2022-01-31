@@ -7,5 +7,5 @@ import com.google.gson.annotations.Expose
 data class CapitalInfo(
     @SerializedName("latlng")
     @Expose
-    val latlng: List<Double>
+    val latlng: List<Double>?
 )

@@ -74,4 +74,78 @@ data class CountryEntity(
     val tld: List<String>,
     @ColumnInfo(name = "unMember")
     val unMember: Boolean
-): Parcelable
+): Parcelable {
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as CountryEntity
+
+        if (altSpellings != other.altSpellings) return false
+        if (area != other.area) return false
+        if (borders != other.borders) return false
+        if (capital != other.capital) return false
+        if (capitalLatLng != other.capitalLatLng) return false
+        if (carSide != other.carSide) return false
+        if (carSigns != other.carSigns) return false
+        if (coatOfArmsSvg != other.coatOfArmsSvg) return false
+        if (continents != other.continents) return false
+        if (demonymMale != other.demonymMale) return false
+        if (demonymFemale != other.demonymFemale) return false
+        if (fifa != other.fifa) return false
+        if (flagEmoji != other.flagEmoji) return false
+        if (flagsSvg != other.flagsSvg) return false
+        if (independent != other.independent) return false
+        if (landlocked != other.landlocked) return false
+        if (latlng != other.latlng) return false
+        if (name != other.name) return false
+        if (nativeNameKey != other.nativeNameKey) return false
+        if (nativeNameValue != other.nativeNameValue) return false
+        if (officialName != other.officialName) return false
+        if (population != other.population) return false
+        if (region != other.region) return false
+        if (startOfWeek != other.startOfWeek) return false
+        if (status != other.status) return false
+        if (subregion != other.subregion) return false
+        if (timezones != other.timezones) return false
+        if (tld != other.tld) return false
+        if (unMember != other.unMember) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = id.hashCode()
+        result = 31 * result + altSpellings.hashCode()
+        result = 31 * result + area.hashCode()
+        result = 31 * result + borders.hashCode()
+        result = 31 * result + capital.hashCode()
+        result = 31 * result + capitalLatLng.hashCode()
+        result = 31 * result + carSide.hashCode()
+        result = 31 * result + carSigns.hashCode()
+        result = 31 * result + coatOfArmsSvg.hashCode()
+        result = 31 * result + continents.hashCode()
+        result = 31 * result + demonymMale.hashCode()
+        result = 31 * result + demonymFemale.hashCode()
+        result = 31 * result + fifa.hashCode()
+        result = 31 * result + flagEmoji.hashCode()
+        result = 31 * result + flagsSvg.hashCode()
+        result = 31 * result + independent.hashCode()
+        result = 31 * result + landlocked.hashCode()
+        result = 31 * result + latlng.hashCode()
+        result = 31 * result + name.hashCode()
+        result = 31 * result + nativeNameKey.hashCode()
+        result = 31 * result + nativeNameValue.hashCode()
+        result = 31 * result + officialName.hashCode()
+        result = 31 * result + population
+        result = 31 * result + region.hashCode()
+        result = 31 * result + startOfWeek.hashCode()
+        result = 31 * result + status.hashCode()
+        result = 31 * result + subregion.hashCode()
+        result = 31 * result + timezones.hashCode()
+        result = 31 * result + tld.hashCode()
+        result = 31 * result + unMember.hashCode()
+        return result
+    }
+}

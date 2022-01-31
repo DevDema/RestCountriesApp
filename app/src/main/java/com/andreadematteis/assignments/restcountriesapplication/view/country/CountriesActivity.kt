@@ -1,4 +1,4 @@
-package com.andreadematteis.assignments.restcountriesapplication.view
+package com.andreadematteis.assignments.restcountriesapplication.view.country
 
 import android.os.Bundle
 import androidx.fragment.app.FragmentActivity

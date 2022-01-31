@@ -1,4 +1,4 @@
-package com.andreadematteis.assignments.restcountriesapplication.view.fragments
+package com.andreadematteis.assignments.restcountriesapplication.view.country.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
