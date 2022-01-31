@@ -17,7 +17,8 @@ import androidx.room.*
         )
     ],
     indices = [
-        Index("country_id", "currency_id")
+        Index("country_id"),
+        Index("currency_id")
     ]
 )
 class CountryCurrencyEntity(

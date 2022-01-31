@@ -16,7 +16,8 @@ import androidx.room.*
         )
     ],
     indices = [
-        Index("country_id", "language_id")
+        Index("country_id"),
+        Index("language_id")
     ])
 class CountryLanguageEntity(
     @PrimaryKey(autoGenerate = true)
