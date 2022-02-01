@@ -4,6 +4,7 @@ import android.os.Parcelable
 import androidx.room.*
 import com.andreadematteis.assignments.restcountriesapplication.room.utils.DoubleListConverters
 import com.andreadematteis.assignments.restcountriesapplication.room.utils.StringListConverters
+import com.andreadematteis.assignments.restcountriesapplication.utils.toCommaSeparatedString
 import kotlinx.parcelize.Parcelize
 
 @Entity(
@@ -75,6 +76,9 @@ data class CountryEntity(
     @ColumnInfo(name = "unMember")
     val unMember: Boolean
 ): Parcelable {
+
+    val commaSeparatedContinents: String
+        get() = continents.toCommaSeparatedString()
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

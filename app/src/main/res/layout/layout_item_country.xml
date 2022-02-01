@@ -77,7 +77,7 @@
                     android:layout_marginEnd="@dimen/distance_from_screen"
                     android:layout_marginStart="@dimen/distance_from_screen"
                     tools:text="Europe, Asia, Antartica, America"
-                    android:text="@{item.continents.toString()}"
+                    android:text="@{item.commaSeparatedContinents}"
                     android:maxLines="1"
                     android:ellipsize="end"
                     android:layout_marginBottom="@dimen/margin_small"
