@@ -47,7 +47,28 @@ class LoadingActivity: AppCompatActivity() {
 
                     startActivity(Intent(this, CountriesActivity::class.java))
                 }
-                else -> {
+                LoadingStatus.FAILED -> {
+                    binding.progressCircular.visibility = View.INVISIBLE
+                    binding.progressText.visibility = View.INVISIBLE
+
+                    viewModel.stopRandomizeText()
+
+                    AlertDialog.Builder(this)
+                        .setTitle(R.string.dialog_loading_error_title)
+                        .setMessage(R.string.dialog_loading_error_local_data_message)
+                        .setPositiveButton(R.string.start_anyway_label) { dialog, _ ->
+                            dialog.dismiss()
+                            finish()
+
+                            startActivity(Intent(this, CountriesActivity::class.java))
+                        }
+                        .setNegativeButton(R.string.retry_label) { dialog, _ ->
+                            dialog.dismiss()
+
+                            loadCountries()
+                        }.show()
+                }
+                LoadingStatus.FAILED_BUT_NO_COUNTRIES -> {
                     binding.progressCircular.visibility = View.INVISIBLE
                     binding.progressText.visibility = View.INVISIBLE
 
@@ -56,14 +77,15 @@ class LoadingActivity: AppCompatActivity() {
                     AlertDialog.Builder(this)
                         .setTitle(R.string.dialog_loading_error_title)
                         .setMessage(R.string.dialog_loading_error_message)
-                        .setPositiveButton(R.string.start_anyway_label) { dialog, _ ->
-                            dialog.dismiss()
-                            finish()
-                        }
-                        .setNegativeButton(R.string.retry_label) { dialog, _ ->
+                        .setPositiveButton(R.string.retry_label) { dialog, _ ->
                             dialog.dismiss()
 
                             loadCountries()
+                        }
+                        .setNegativeButton(R.string.exit_app_label) { dialog, _ ->
+                            dialog.dismiss()
+
+                            finish()
                         }.show()
                 }
             }

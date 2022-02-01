@@ -56,7 +56,11 @@ class LoadingViewModel @Inject constructor(
 
             }.exceptionOrNull()?.let {
                 it.printStackTrace()
-                mutableIsLoadingDone.value = LoadingStatus.FAILED
+                if(countriesRepository.getAll().isEmpty()) {
+                    mutableIsLoadingDone.value = LoadingStatus.FAILED_BUT_NO_COUNTRIES
+                } else {
+                    mutableIsLoadingDone.value = LoadingStatus.FAILED
+                }
             }
         }
     }
