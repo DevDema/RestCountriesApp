@@ -57,6 +57,7 @@ class LoadingActivity : AppCompatActivity() {
                     viewModel.stopRandomizeText()
 
                     AlertDialog.Builder(this)
+                        .setCancelable(false)
                         .setTitle(R.string.dialog_loading_error_title)
                         .setMessage(R.string.dialog_loading_error_local_data_message)
                         .setPositiveButton(R.string.start_anyway_label) { dialog, _ ->
@@ -77,6 +78,7 @@ class LoadingActivity : AppCompatActivity() {
                     viewModel.stopRandomizeText()
 
                     AlertDialog.Builder(this)
+                        .setCancelable(false)
                         .setTitle(R.string.dialog_loading_error_title)
                         .setMessage(R.string.dialog_loading_error_message)
                         .setPositiveButton(R.string.retry_label) { dialog, _ ->

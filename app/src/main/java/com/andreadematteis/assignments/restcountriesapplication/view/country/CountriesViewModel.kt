@@ -17,11 +17,13 @@ class CountriesViewModel @Inject constructor(
     countriesRepository: CountryRepository
 ): ViewModel() {
 
-    val searchText = MutableLiveData<String>()
+    private val mutableSearchText = MutableLiveData<String>()
     private val mutableCountries = MutableLiveData<List<CountryEntity>>()
 
     val countries: LiveData<List<CountryEntity>>
         get() = mutableCountries
+    val searchText: LiveData<String>
+        get() = mutableSearchText
 
     init {
         viewModelScope.launch {
@@ -31,5 +33,9 @@ class CountriesViewModel @Inject constructor(
 
             mutableCountries.value = countryEntities
         }
+    }
+
+    fun setSearchText(text: String) {
+        mutableSearchText.value = text
     }
 }

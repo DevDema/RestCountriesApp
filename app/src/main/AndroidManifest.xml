@@ -13,7 +13,6 @@
             android:theme="@style/Theme.RestCountriesApplication" >
         <activity
                 android:name=".view.loading.LoadingActivity"
-                android:configChanges="orientation"
                 android:theme="@style/Theme.RestCountriesApplication.NoActionBar"
                 android:exported="true">
             <intent-filter>
@@ -23,7 +22,6 @@
         </activity>
         <activity
                 android:name=".view.country.CountriesActivity"
-                android:configChanges="orientation"
                 android:theme="@style/Theme.RestCountriesApplication.NoActionBar"/>
     </application>
 

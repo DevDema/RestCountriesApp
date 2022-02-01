@@ -1,15 +1,18 @@
 package com.andreadematteis.assignments.restcountriesapplication.view.country.fragments
 
+import android.content.Context
 import android.graphics.Rect
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.andreadematteis.assignments.restcountriesapplication.databinding.FragmentListCountriesBinding
+import com.andreadematteis.assignments.restcountriesapplication.view.country.CountriesViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -17,6 +20,7 @@ class CountriesListFragment: Fragment() {
 
     private lateinit var binding: FragmentListCountriesBinding
     private val viewModel: CountriesListViewModel by viewModels()
+    private val activityViewModel: CountriesViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -58,13 +62,21 @@ class CountriesListFragment: Fragment() {
         })
 
         viewModel.countryList.observe(viewLifecycleOwner) {
-            binding.recyclerView.adapter = CountryListAdapter(it)
+            binding.recyclerView.adapter = CountryListAdapter(requireContext().applicationContext, it)
 
             viewModel.startWatchingImageCache()
         }
 
         viewModel.idImage.observe(viewLifecycleOwner) {
             (binding.recyclerView.adapter as CountryListAdapter).setImage(it)
+        }
+
+        activityViewModel.searchText.observe(viewLifecycleOwner) {
+            if(it.isNullOrBlank()) {
+                (binding.recyclerView.adapter as CountryListAdapter).restoreFilter()
+            } else {
+                (binding.recyclerView.adapter as CountryListAdapter).filter(it)
+            }
         }
 
         viewModel.getCountries()

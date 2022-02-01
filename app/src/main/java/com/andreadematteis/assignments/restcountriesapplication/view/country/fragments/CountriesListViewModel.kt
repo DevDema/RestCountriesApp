@@ -23,7 +23,7 @@ class CountriesListViewModel @Inject constructor(
     private val countriesRepository: CountryRepository
 ) : AndroidViewModel(application) {
 
-    private lateinit var countryEntityList: List<CountryEntity>
+    private var countryEntityList = emptyList<CountryEntity>()
 
     private val mutableIdImage = MutableLiveData<Pair<Long, Bitmap>>()
     private val mutableCountryList = MutableLiveData<List<CountryEntity>>()
@@ -35,6 +35,10 @@ class CountriesListViewModel @Inject constructor(
 
     fun getCountries() {
         viewModelScope.launch {
+            if(countryEntityList.isNotEmpty()) {
+                return@launch
+            }
+
             countryEntityList = withContext(Dispatchers.IO) {
                 countriesRepository.getAll()
             }
@@ -82,7 +86,7 @@ class CountriesListViewModel @Inject constructor(
                         }
                     }
 
-                    delay(1000)
+                    delay(200)
                 }
             }
         }
