@@ -61,6 +61,7 @@
                     android:textStyle="italic"
                     android:maxLines="2"
                     android:ellipsize="end"
+                    android:text="@{item.officialName}"
                     tools:text="Italian Republic of our incredible country"
                     style="@style/TextAppearance.AppCompat.Small"
                     app:layout_constraintHorizontal_bias="0"
