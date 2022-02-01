@@ -28,7 +28,7 @@
                     tools:background="@color/black_transparent"
                     android:layout_marginBottom="@dimen/distance_from_screen"
                     android:layout_marginEnd="@dimen/distance_from_screen"
-
+                    android:layout_marginTop="@dimen/margin_small"
                     app:layout_constraintHorizontal_bias="1"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
