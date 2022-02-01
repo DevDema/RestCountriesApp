@@ -1,6 +1,5 @@
 package com.andreadematteis.assignments.restcountriesapplication.view.country.fragments
 
-import android.content.Context
 import android.graphics.Rect
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,7 +15,7 @@ import com.andreadematteis.assignments.restcountriesapplication.view.country.Cou
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class CountriesListFragment: Fragment() {
+class CountriesListFragment : Fragment(), CountryAdapterBinder {
 
     private lateinit var binding: FragmentListCountriesBinding
     private val viewModel: CountriesListViewModel by viewModels()
@@ -59,7 +58,8 @@ class CountriesListFragment: Fragment() {
         })
 
         viewModel.countryList.observe(viewLifecycleOwner) {
-            binding.recyclerView.adapter = CountryListAdapter(requireContext().applicationContext, it)
+            binding.recyclerView.adapter =
+                CountryListAdapter(requireContext().applicationContext, this, it)
 
             viewModel.startWatchingImageCache()
         }
@@ -69,13 +69,26 @@ class CountriesListFragment: Fragment() {
         }
 
         activityViewModel.searchText.observe(viewLifecycleOwner) {
-            if(it.isNullOrBlank()) {
+            if (it.isNullOrBlank()) {
                 (binding.recyclerView.adapter as CountryListAdapter).restoreFilter()
             } else {
                 (binding.recyclerView.adapter as CountryListAdapter).filter(it)
             }
         }
 
+        binding.noCountryLabel.visibility = View.GONE
+        binding.recyclerView.visibility = View.VISIBLE
+
         viewModel.getCountries()
+    }
+
+    override fun onCountryResults(countryEntities: List<CountryWrapper>) {
+        binding.noCountryLabel.visibility = View.GONE
+        binding.recyclerView.visibility = View.VISIBLE
+    }
+
+    override fun onNoCountry() {
+        binding.noCountryLabel.visibility = View.VISIBLE
+        binding.recyclerView.visibility = View.INVISIBLE
     }
 }

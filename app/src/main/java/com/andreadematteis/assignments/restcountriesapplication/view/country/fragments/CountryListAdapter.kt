@@ -13,7 +13,11 @@ import com.andreadematteis.assignments.restcountriesapplication.R
 import com.andreadematteis.assignments.restcountriesapplication.databinding.LayoutItemCountryBinding
 import com.andreadematteis.assignments.restcountriesapplication.room.model.CountryEntity
 
-class CountryListAdapter(private val context: Context, items: List<CountryEntity>) :
+class CountryListAdapter(
+    private val context: Context,
+    private val binder: CountryAdapterBinder,
+    items: List<CountryEntity>
+) :
     RecyclerView.Adapter<CountryListAdapter.ViewHolder>(), Filterable {
     class ViewHolder(val binding: LayoutItemCountryBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -41,12 +45,22 @@ class CountryListAdapter(private val context: Context, items: List<CountryEntity
 
         holder.binding.item = item.countryEntity
 
-        if(item.flag != null) {
-            holder.binding.flagImage.setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent))
+        if (item.flag != null) {
+            holder.binding.flagImage.setBackgroundColor(
+                ContextCompat.getColor(
+                    context,
+                    android.R.color.transparent
+                )
+            )
             holder.binding.flagImage.setImageBitmap(item.flag)
         } else {
             holder.binding.flagImage.setImageBitmap(null)
-            holder.binding.flagImage.setBackgroundColor(ContextCompat.getColor(context, R.color.black_transparent))
+            holder.binding.flagImage.setBackgroundColor(
+                ContextCompat.getColor(
+                    context,
+                    R.color.black_transparent
+                )
+            )
         }
     }
 
@@ -76,8 +90,10 @@ class CountryListAdapter(private val context: Context, items: List<CountryEntity
         filter.filter(string)
     }
 
-    class FilterCountry(private val completeList: List<CountryWrapper>,
-                        private val onFiltered: (List<CountryWrapper>) -> Unit) :
+    class FilterCountry(
+        private val completeList: List<CountryWrapper>,
+        private val onFiltered: (List<CountryWrapper>) -> Unit
+    ) :
         Filter() {
 
         override fun performFiltering(constraint: CharSequence): FilterResults {
@@ -107,6 +123,12 @@ class CountryListAdapter(private val context: Context, items: List<CountryEntity
     }
 
     override fun getFilter() = FilterCountry(itemsBitmapsMap) { newList ->
+        if(newList.isEmpty()) {
+            binder.onNoCountry()
+        } else {
+            binder.onCountryResults(newList)
+        }
+
         val oldList = filteredItemsBitmapsMap.toList()
 
         changeLists(oldList, newList)
@@ -115,6 +137,8 @@ class CountryListAdapter(private val context: Context, items: List<CountryEntity
     }
 
     fun restoreFilter() {
+        binder.onCountryResults(itemsBitmapsMap)
+
         val oldList = filteredItemsBitmapsMap.toList()
 
         changeLists(oldList, itemsBitmapsMap)
