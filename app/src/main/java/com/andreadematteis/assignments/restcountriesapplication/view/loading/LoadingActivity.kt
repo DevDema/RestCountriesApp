@@ -1,5 +1,6 @@
 package com.andreadematteis.assignments.restcountriesapplication.view.loading
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
@@ -8,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.andreadematteis.assignments.restcountriesapplication.R
 import com.andreadematteis.assignments.restcountriesapplication.databinding.ActivityLoadingBinding
 import com.andreadematteis.assignments.restcountriesapplication.utils.BitmapUtils
+import com.andreadematteis.assignments.restcountriesapplication.view.country.CountriesActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -42,6 +44,8 @@ class LoadingActivity: AppCompatActivity() {
                     binding.progressCircular.setProgress(100, true)
 
                     finish()
+
+                    startActivity(Intent(this, CountriesActivity::class.java))
                 }
                 else -> {
                     binding.progressCircular.visibility = View.INVISIBLE

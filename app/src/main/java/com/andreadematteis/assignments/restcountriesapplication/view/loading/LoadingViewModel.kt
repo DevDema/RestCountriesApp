@@ -135,7 +135,7 @@ class LoadingViewModel @Inject constructor(
     private fun startWorker(countryList: List<CountryEntity>) {
         val data = Data.Builder().apply {
             countryList.forEach {
-                putString(it.id.toString(), it.flagsSvg)
+                putString(it.id.toString(), it.flagsPng)
             }
         }.build()
 

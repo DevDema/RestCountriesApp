@@ -18,7 +18,7 @@ class DownloadImagesForCountryWorker(
     override fun doWork(): Result {
         workerParams.inputData.keyValueMap.forEach { (key, value) ->
             val svgString = value as String
-            val f = File(context.cacheDir, "$key.svg")
+            val f = File(context.cacheDir, "$key.png")
 
             if(f.exists()) {
                 return@forEach

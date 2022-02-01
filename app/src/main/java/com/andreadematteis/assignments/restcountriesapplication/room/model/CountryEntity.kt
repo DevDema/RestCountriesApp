@@ -43,7 +43,7 @@ data class CountryEntity(
     @ColumnInfo(name ="flag_emoji")
     val flagEmoji: String,
     @ColumnInfo(name ="flags_svg")
-    val flagsSvg: String,
+    val flagsPng: String,
     @ColumnInfo(name ="independent")
     val independent: Boolean,
     @ColumnInfo(name ="landlocked")
@@ -95,7 +95,7 @@ data class CountryEntity(
         if (demonymFemale != other.demonymFemale) return false
         if (fifa != other.fifa) return false
         if (flagEmoji != other.flagEmoji) return false
-        if (flagsSvg != other.flagsSvg) return false
+        if (flagsPng != other.flagsPng) return false
         if (independent != other.independent) return false
         if (landlocked != other.landlocked) return false
         if (latlng != other.latlng) return false
@@ -130,7 +130,7 @@ data class CountryEntity(
         result = 31 * result + demonymFemale.hashCode()
         result = 31 * result + fifa.hashCode()
         result = 31 * result + flagEmoji.hashCode()
-        result = 31 * result + flagsSvg.hashCode()
+        result = 31 * result + flagsPng.hashCode()
         result = 31 * result + independent.hashCode()
         result = 31 * result + landlocked.hashCode()
         result = 31 * result + latlng.hashCode()
