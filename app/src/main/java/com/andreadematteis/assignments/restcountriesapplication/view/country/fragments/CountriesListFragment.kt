@@ -52,10 +52,7 @@ class CountriesListFragment: Fragment() {
                     outRect.top = 100
                 }
 
-                if (position != parent.adapter!!.itemCount - 1) {
-                    outRect.bottom = 20
-                }
-
+                outRect.bottom = 20
                 outRect.left = 40
                 outRect.right = 40
             }
