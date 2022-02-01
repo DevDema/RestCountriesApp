@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 import com.google.gson.annotations.Expose
 
 data class Flags(
-    @SerializedName("svg")
+    @SerializedName("png")
     @Expose
-    val svg: String
+    val png: String
 )

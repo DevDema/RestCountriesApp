@@ -7,5 +7,5 @@ import com.google.gson.annotations.Expose
 data class CoatOfArms(
     @SerializedName("svg")
     @Expose
-    val svg: String
+    val svg: String?
 )

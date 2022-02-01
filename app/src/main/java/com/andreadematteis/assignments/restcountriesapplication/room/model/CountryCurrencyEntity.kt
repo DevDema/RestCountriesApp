@@ -1,11 +1,9 @@
 package com.andreadematteis.assignments.restcountriesapplication.room.model
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.PrimaryKey
+import androidx.room.*
 
-@Entity(tableName = "country_currency_table",
+@Entity(
+    tableName = "country_currency_table",
     foreignKeys = [
         ForeignKey(
             entity = CountryEntity::class,
@@ -17,7 +15,12 @@ import androidx.room.PrimaryKey
             parentColumns = arrayOf("currency_id"),
             childColumns = arrayOf("currency_id")
         )
-    ])
+    ],
+    indices = [
+        Index("country_id"),
+        Index("currency_id")
+    ]
+)
 class CountryCurrencyEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "country_currency_id")

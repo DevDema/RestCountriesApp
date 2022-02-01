@@ -5,6 +5,6 @@ import retrofit2.http.GET
 
 interface CountriesService {
 
-    @GET
+    @GET("all")
     suspend fun getAll(): List<Country>
 }

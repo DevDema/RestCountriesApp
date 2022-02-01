@@ -7,7 +7,7 @@
 
     <fragment
             android:id="@+id/country_fragment"
-            android:name="com.andreadematteis.assignments.restcountriesapplication.view.fragments.CountriesListFragment"
+            android:name="com.andreadematteis.assignments.restcountriesapplication.view.country.fragments.CountriesListFragment"
             android:label="@string/countries_fragment_title"
             tools:layout="@layout/fragment_list_countries">
     </fragment>

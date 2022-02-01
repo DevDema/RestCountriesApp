@@ -1,11 +1,14 @@
 package com.andreadematteis.assignments.restcountriesapplication.repositories
 
+import android.util.Log
+import androidx.annotation.VisibleForTesting
 import com.andreadematteis.assignments.restcountriesapplication.model.Country
 import com.andreadematteis.assignments.restcountriesapplication.model.countryinfo.Currency
 import com.andreadematteis.assignments.restcountriesapplication.model.countryinfo.Translation
 import com.andreadematteis.assignments.restcountriesapplication.network.services.CountriesService
 import com.andreadematteis.assignments.restcountriesapplication.room.CountriesDatabase
 import com.andreadematteis.assignments.restcountriesapplication.room.model.CountryCurrencyEntity
+import com.andreadematteis.assignments.restcountriesapplication.room.model.CountryEntity
 import com.andreadematteis.assignments.restcountriesapplication.room.model.CountryLanguageEntity
 import com.andreadematteis.assignments.restcountriesapplication.room.model.CountryTranslationEntity
 import com.andreadematteis.assignments.restcountriesapplication.room.utils.*
@@ -15,52 +18,111 @@ class CountryRepository(
     private val roomDatabase: CountriesDatabase
 ) {
 
+    suspend fun fetchCountries(): List<Country> = countriesService.getAll()
+
+    suspend fun removeCountry(country: CountryEntity): Int =
+        roomDatabase.countriesDao().removeCountry(country).also {
+            if (it != 1) {
+                Log.w(
+                    javaClass.simpleName,
+                    "No affected rows in delete country: ${country.name}"
+                )
+            }
+        }
+
     suspend fun saveCountry(country: Country): Long {
-        val countryId = roomDatabase.countriesDao().insertCountry(country.toEntity())
+        kotlin.runCatching {
+            val countryId = roomDatabase.countriesDao().insertOrUpdateCountry(country.toEntity())
 
-        country.currencies
-            .map { CurrencyConverters.toEntity(it.key to it.value) }
-            .forEach {
-                val currencyId = roomDatabase.currencyDao().insertCurrency(it)
+            country.currencies
+                ?.map { CurrencyConverters.toEntity(it.key to it.value) }
+                ?.forEach {
+                    val currencyId = roomDatabase.currencyDao().insertCurrency(it)
 
-                roomDatabase.countryCurrencyDao().insertCountryCurrency(
-                    CountryCurrencyEntity(
-                        0,
-                        countryId,
-                        currencyId
-                    )
-                )
-            }
+                    if (currencyId == -1L) {
+                        return@forEach
+                    }
 
-        country.languages
-            .map { LanguageConverters.toEntity(it.toPair()) }
-            .forEach {
-                val languageId = roomDatabase.languagesDao().insertLanguage(it)
+                    kotlin.runCatching {
+                        roomDatabase.countryCurrencyDao().insertCountryCurrency(
+                            CountryCurrencyEntity(
+                                0,
+                                countryId,
+                                currencyId
+                            )
+                        )
+                    }.exceptionOrNull()?.let { err ->
+                        Log.e(
+                            javaClass.simpleName,
+                            "Error on country: $countryId & currencyId: $currencyId; ${err.message}"
+                        )
+                        err.printStackTrace()
+                    }
+                }
 
-                roomDatabase.countryLanguageDao().insertCountryLanguage(
-                    CountryLanguageEntity(
-                        0,
-                        countryId,
-                        languageId
-                    )
-                )
-            }
+            country.languages
+                ?.map { LanguageConverters.toEntity(it.toPair()) }
+                ?.forEach {
+                    val languageId = roomDatabase.languagesDao().insertLanguage(it)
 
-        country.translations
-            .map { TranslationConverters.toEntity(it.toPair()) }
-            .forEach {
-                val translationId = roomDatabase.translationDao().insertTranslation(it)
+                    if (languageId == -1L) {
+                        return@forEach
+                    }
 
-                roomDatabase.countryTranslationDao().insertCountryTranslation(
-                    CountryTranslationEntity(
-                        0,
-                        countryId,
-                        translationId
-                    )
-                )
-            }
+                    kotlin.runCatching {
+                        roomDatabase.countryLanguageDao().insertCountryLanguage(
+                            CountryLanguageEntity(
+                                0,
+                                countryId,
+                                languageId
+                            )
+                        )
+                    }.exceptionOrNull()?.let { err ->
+                        Log.e(
+                            javaClass.simpleName,
+                            "Error on country: $countryId & languageId: $languageId; ${err.message}"
+                        )
+                        err.printStackTrace()
+                    }
+                }
 
-        return countryId
+            country.translations
+                ?.map { TranslationConverters.toEntity(it.toPair()) }
+                ?.forEach {
+                    val translationId = roomDatabase.translationDao().insertTranslation(it)
+
+                    if (translationId == -1L) {
+                        return@forEach
+                    }
+
+                    kotlin.runCatching {
+                        roomDatabase.countryTranslationDao().insertCountryTranslation(
+                            CountryTranslationEntity(
+                                0,
+                                countryId,
+                                translationId
+                            )
+                        )
+                    }.exceptionOrNull()?.let { err ->
+                        Log.e(
+                            javaClass.simpleName,
+                            "Error on country: $countryId & transactionId: $translationId; ${err.message}"
+                        )
+                        err.printStackTrace()
+                    }
+                }
+
+            return countryId
+        }.exceptionOrNull()?.let { err ->
+            Log.e(
+                javaClass.simpleName,
+                "Error on country: ${country.name.common}; ${err.message}"
+            )
+            err.printStackTrace()
+
+        }
+
+        return -1
     }
 
     suspend fun getAll() = roomDatabase.countriesDao().getCountries()
@@ -102,6 +164,7 @@ class CountryRepository(
             }
         }.distinctBy { it.roomId }
 
+    @VisibleForTesting
     suspend fun getAllWithCurrency() = roomDatabase
         .countriesDao()
         .getCountriesWithCurrency()
@@ -120,6 +183,7 @@ class CountryRepository(
             }
         }.distinctBy { it.roomId }
 
+    @VisibleForTesting
     suspend fun getAllWithLanguages() = roomDatabase
         .countriesDao()
         .getCountriesWithLanguages()
@@ -136,6 +200,7 @@ class CountryRepository(
             }
         }.distinctBy { it.roomId }
 
+    @VisibleForTesting
     suspend fun getAllWithTranslations() = roomDatabase
         .countriesDao()
         .getCountriesWithTranslation()

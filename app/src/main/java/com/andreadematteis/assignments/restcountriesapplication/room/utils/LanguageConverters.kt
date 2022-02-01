@@ -5,9 +5,9 @@ import com.andreadematteis.assignments.restcountriesapplication.room.model.Langu
 
 object LanguageConverters {
 
-    fun toEntity(languagePair: Pair<String, String>) = LanguageEntity(
+    fun toEntity(languagePair: Pair<String?, String?>?) = LanguageEntity(
         0,
-        languagePair.first,
-        languagePair.second
+        languagePair?.first ?: "",
+        languagePair?.second ?: ""
     )
 }
