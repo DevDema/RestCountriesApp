@@ -12,6 +12,7 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             android:focusable="true"
+            android:focusableInTouchMode="true"
             android:foreground="?android:attr/selectableItemBackground"
             app:cardElevation="@dimen/card_view_elevation"
             app:cardCornerRadius="@dimen/card_view_radius">
