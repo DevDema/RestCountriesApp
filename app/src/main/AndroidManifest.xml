@@ -23,7 +23,8 @@
         </activity>
         <activity
                 android:name=".view.country.CountriesActivity"
-                android:configChanges="orientation" />
+                android:configChanges="orientation"
+                android:theme="@style/Theme.RestCountriesApplication.NoActionBar"/>
     </application>
 
 </manifest>

@@ -17,4 +17,5 @@
     <string name="delicious_cookie_loading">Opening a delicious cookie...</string>
     <string name="countries_loading">Loading countries...</string>
     <string name="exit_app_label">Exit app</string>
+    <string name="search_text_field_hint">Italy, Sweden, Great Britain</string>
 </resources>

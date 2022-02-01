@@ -13,7 +13,7 @@ import com.andreadematteis.assignments.restcountriesapplication.view.country.Cou
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class LoadingActivity: AppCompatActivity() {
+class LoadingActivity : AppCompatActivity() {
 
     private val viewModel: LoadingViewModel by viewModels()
     private lateinit var binding: ActivityLoadingBinding
@@ -28,9 +28,14 @@ class LoadingActivity: AppCompatActivity() {
         setContentView(binding.root)
 
         binding.worldImage.setImageBitmap(BitmapUtils.bitmapFromAssets(this, "BlankMap-World.png"))
-        binding.worldColoredImage.setImageBitmap(BitmapUtils.bitmapFromAssets(this, "ColoredMap-World.png"))
+        binding.worldColoredImage.setImageBitmap(
+            BitmapUtils.bitmapFromAssets(
+                this,
+                "ColoredMap-World.png"
+            )
+        )
         viewModel.isLoadingDone.observe(this) {
-            when(it) {
+            when (it) {
                 LoadingStatus.IN_PROGRESS -> {
                     binding.progressCircular.visibility = View.VISIBLE
                     binding.progressText.visibility = View.VISIBLE
@@ -43,9 +48,7 @@ class LoadingActivity: AppCompatActivity() {
 
                     binding.progressCircular.setProgress(100, true)
 
-                    finish()
-
-                    startActivity(Intent(this, CountriesActivity::class.java))
+                    openCountries()
                 }
                 LoadingStatus.FAILED -> {
                     binding.progressCircular.visibility = View.INVISIBLE
@@ -58,9 +61,8 @@ class LoadingActivity: AppCompatActivity() {
                         .setMessage(R.string.dialog_loading_error_local_data_message)
                         .setPositiveButton(R.string.start_anyway_label) { dialog, _ ->
                             dialog.dismiss()
-                            finish()
 
-                            startActivity(Intent(this, CountriesActivity::class.java))
+                            openCountries()
                         }
                         .setNegativeButton(R.string.retry_label) { dialog, _ ->
                             dialog.dismiss()
@@ -100,5 +102,12 @@ class LoadingActivity: AppCompatActivity() {
 
         viewModel.startRandomizeText()
         viewModel.loadCountries()
+    }
+
+    private fun openCountries() {
+        startActivity(Intent(this, CountriesActivity::class.java))
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out )
+
+        finishAfterTransition()
     }
 }

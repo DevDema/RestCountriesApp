@@ -24,6 +24,10 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="appBarLayoutStyle">@style/Theme.RestCountriesApplication.AppBar</item>
         <!-- Customize your theme here. -->
+    </style>
+    <style name="Theme.RestCountriesApplication.AppBar" parent="Widget.MaterialComponents.AppBarLayout.Primary">
+        <item name="android:background">@color/light_white</item>
     </style>
 </resources>

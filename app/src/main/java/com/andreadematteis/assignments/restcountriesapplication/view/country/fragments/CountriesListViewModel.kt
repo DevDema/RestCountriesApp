@@ -4,9 +4,11 @@ import android.app.Application
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.andreadematteis.assignments.restcountriesapplication.repositories.CountryRepository
+import com.andreadematteis.assignments.restcountriesapplication.room.model.CountryEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -21,22 +23,48 @@ class CountriesListViewModel @Inject constructor(
     private val countriesRepository: CountryRepository
 ) : AndroidViewModel(application) {
 
+    private lateinit var countryEntityList: List<CountryEntity>
+
     private val mutableIdImage = MutableLiveData<Pair<Long, Bitmap>>()
+    private val mutableCountryList = MutableLiveData<List<CountryEntity>>()
+
+    val countryList: LiveData<List<CountryEntity>>
+        get() = mutableCountryList
+    val idImage: LiveData<Pair<Long, Bitmap>>
+        get() = mutableIdImage
+
+    fun getCountries() {
+        viewModelScope.launch {
+            countryEntityList = withContext(Dispatchers.IO) {
+                countriesRepository.getAll()
+            }
+
+            mutableCountryList.value = countryEntityList
+        }
+    }
 
     fun startWatchingImageCache() {
         viewModelScope.launch {
 
             withContext(Dispatchers.IO) {
-                val missingImagesCountry = countriesRepository.getAll().map { it.id }
+                val missingImagesCountry = countryEntityList.map { it.id }
+                val doneList = buildList {
+                    repeat(countryEntityList.size) {
+                        add(false)
+                    }
+                }.toMutableList()
 
                 while (true) {
-                    if(missingImagesCountry.isEmpty()) {
+                    if(doneList.all { it }) {
                         break
                     }
 
-                    for (countryId in missingImagesCountry) {
-                        val file = File(getApplication<Application>().cacheDir, "$countryId.png")
+                    for (countryIdIndexed in missingImagesCountry.withIndex()) {
+                        if(doneList[countryIdIndexed.index]) {
+                            continue
+                        }
 
+                        val file = File(getApplication<Application>().cacheDir, "${countryIdIndexed.value}.png")
                         if (!file.exists()) {
                             continue
                         }
@@ -46,8 +74,11 @@ class CountriesListViewModel @Inject constructor(
                         )?.let {
                             withContext(Dispatchers.Main) {
                                 mutableIdImage.value =
-                                    countryId to it
+                                    countryIdIndexed.value to it
+
                             }
+
+                            doneList[countryIdIndexed.index] = true
                         }
                     }
 
