@@ -42,7 +42,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/distance_from_screen"
                     android:layout_marginTop="@dimen/distance_from_screen"
-                    style="@style/TextAppearance.AppCompat.Title"
+                    style="@style/TextAppearance.AppCompat.Headline"
                     android:text="@{item.name}"
                     tools:text="Italy"
                     android:ellipsize="marquee"
@@ -51,6 +51,42 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toTopOf="@id/flag_image" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/official"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/distance_from_screen"
+                    android:layout_marginStart="@dimen/distance_from_screen"
+                    android:textStyle="italic"
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    tools:text="Italian Republic of our incredible country"
+                    style="@style/TextAppearance.AppCompat.Small"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_constraintVertical_bias="0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/flag_image"
+                    app:layout_constraintBottom_toBottomOf="@id/flag_image"
+                    app:layout_constraintEnd_toStartOf="@id/flag_image"/>
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/continent"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/distance_from_screen"
+                    android:layout_marginStart="@dimen/distance_from_screen"
+                    tools:text="Europe, Asia, Antartica, America"
+                    android:text="@{item.continents.toString()}"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:layout_marginBottom="@dimen/margin_small"
+                    style="@style/TextAppearance.AppCompat.Small"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_constraintVertical_bias="1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/official"
+                    app:layout_constraintBottom_toBottomOf="@id/flag_image"
+                    app:layout_constraintEnd_toStartOf="@id/flag_image"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </layout>
