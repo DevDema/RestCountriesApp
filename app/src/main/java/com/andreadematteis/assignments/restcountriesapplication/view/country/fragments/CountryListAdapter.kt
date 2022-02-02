@@ -62,6 +62,8 @@ class CountryListAdapter(
                 )
             )
         }
+
+        holder.binding.root.setOnClickListener { binder.openDetails(item.countryEntity, item.flag) }
     }
 
     override fun getItemCount() = filteredItemsBitmapsMap.size

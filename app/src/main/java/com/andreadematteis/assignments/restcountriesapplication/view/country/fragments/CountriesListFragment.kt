@@ -1,5 +1,7 @@
 package com.andreadematteis.assignments.restcountriesapplication.view.country.fragments
 
+import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.Rect
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,7 +13,9 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.andreadematteis.assignments.restcountriesapplication.databinding.FragmentListCountriesBinding
+import com.andreadematteis.assignments.restcountriesapplication.room.model.CountryEntity
 import com.andreadematteis.assignments.restcountriesapplication.view.country.CountriesViewModel
+import com.andreadematteis.assignments.restcountriesapplication.view.detailcountry.DetailCountriesActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -90,5 +94,19 @@ class CountriesListFragment : Fragment(), CountryAdapterBinder {
     override fun onNoCountry() {
         binding.noCountryLabel.visibility = View.VISIBLE
         binding.recyclerView.visibility = View.INVISIBLE
+    }
+
+    override fun openDetails(countryEntity: CountryEntity, bitmap: Bitmap?) {
+        startActivity(
+            Intent(
+                requireContext(),
+                DetailCountriesActivity::class.java
+            ).apply {
+                putExtra(DetailCountriesActivity.ITEM_KEY_COUNTRY, countryEntity)
+                putExtra(DetailCountriesActivity.ITEM_KEY_IMAGE, bitmap)
+            }
+        )
+
+        activity?.overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
     }
 }

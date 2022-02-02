@@ -23,6 +23,10 @@
         <activity
                 android:name=".view.country.CountriesActivity"
                 android:theme="@style/Theme.RestCountriesApplication.NoActionBar"/>
+
+        <activity
+                android:name=".view.detailcountry.DetailCountriesActivity"
+                android:theme="@style/Theme.RestCountriesApplication.NoActionBar"/>
     </application>
 
 </manifest>
