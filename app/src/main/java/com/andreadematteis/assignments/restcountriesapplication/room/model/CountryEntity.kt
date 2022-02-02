@@ -31,8 +31,8 @@ data class CountryEntity(
     val carSide: String,
     @ColumnInfo(name = "car_signs")
     val carSigns: List<String>,
-    @ColumnInfo(name = "coat_of_arms_svg")
-    val coatOfArmsSvg: String,
+    @ColumnInfo(name = "coat_of_arms_png")
+    val coatOfArmsPng: String,
     @ColumnInfo(name = "continents")
     val continents: List<String>,
     @ColumnInfo(name = "demonym_male")
@@ -93,7 +93,7 @@ data class CountryEntity(
         if (capitalLatLng != other.capitalLatLng) return false
         if (carSide != other.carSide) return false
         if (carSigns != other.carSigns) return false
-        if (coatOfArmsSvg != other.coatOfArmsSvg) return false
+        if (coatOfArmsPng != other.coatOfArmsPng) return false
         if (continents != other.continents) return false
         if (demonymMale != other.demonymMale) return false
         if (demonymFemale != other.demonymFemale) return false
@@ -128,7 +128,7 @@ data class CountryEntity(
         result = 31 * result + capitalLatLng.hashCode()
         result = 31 * result + carSide.hashCode()
         result = 31 * result + carSigns.hashCode()
-        result = 31 * result + coatOfArmsSvg.hashCode()
+        result = 31 * result + coatOfArmsPng.hashCode()
         result = 31 * result + continents.hashCode()
         result = 31 * result + demonymMale.hashCode()
         result = 31 * result + demonymFemale.hashCode()

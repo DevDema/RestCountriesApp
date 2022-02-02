@@ -68,7 +68,7 @@ class CountriesListViewModel @Inject constructor(
                             continue
                         }
 
-                        val file = File(getApplication<Application>().cacheDir, "${countryIdIndexed.value}.png")
+                        val file = File(getApplication<Application>().cacheDir, "${countryIdIndexed.value}-flag.png")
                         if (!file.exists()) {
                             continue
                         }

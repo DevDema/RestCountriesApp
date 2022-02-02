@@ -109,8 +109,6 @@ class LoadingActivity : AppCompatActivity() {
     private fun openCountries() {
         startActivity(Intent(this, CountriesActivity::class.java))
 
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
-
-        finishAfterTransition()
+        finish()
     }
 }

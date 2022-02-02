@@ -58,15 +58,15 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.3.5'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.4.0'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.4.0'
     implementation 'androidx.test.espresso:espresso-contrib:3.4.0'
     implementation "androidx.core:core-ktx:1.7.0"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'androidx.work:work-runtime-ktx:2.5.0'
-    def lifecycle_version = '2.4.0'
-    implementation("io.coil-kt:coil:0.12.0")
-    // Kotlin Android core
+    implementation 'androidx.work:work-runtime-ktx:2.7.1'
+    implementation 'com.squareup.picasso:picasso:2.71828'
+
+    def lifecycle_version = '2.4.0'// Kotlin Android core
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.core:core-ktx:1.7.0'
 
@@ -75,7 +75,7 @@ dependencies {
 
     // Lifecycle MVVM
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
-    implementation 'androidx.fragment:fragment-ktx:1.4.0'
+    implementation 'androidx.fragment:fragment-ktx:1.4.1'
 
     // Useful fancy layouts and views
     implementation 'androidx.appcompat:appcompat:1.4.1'
@@ -100,7 +100,7 @@ dependencies {
     kapt "androidx.room:room-compiler:2.4.1"
     implementation "androidx.room:room-ktx:2.4.1"
 
-    debugImplementation "androidx.fragment:fragment-testing:1.4.0"
+    debugImplementation "androidx.fragment:fragment-testing:1.4.1"
 
     testImplementation 'junit:junit:4.13.2'
     testImplementation "io.mockk:mockk:1.12.1"

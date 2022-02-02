@@ -1,8 +1,6 @@
 package com.andreadematteis.assignments.restcountriesapplication.network
 
-import coil.ImageLoader
 import com.andreadematteis.assignments.restcountriesapplication.repositories.CountryRepository
-import com.andreadematteis.assignments.restcountriesapplication.repositories.ImagesRepository
 import com.andreadematteis.assignments.restcountriesapplication.network.services.CountriesService
 import com.andreadematteis.assignments.restcountriesapplication.room.CountriesDatabase
 import dagger.Module
@@ -23,10 +21,4 @@ object RepositoryModule {
     ): CountryRepository =
         CountryRepository(countriesService, roomDatabase)
 
-    @Singleton
-    @Provides
-    fun provideImagesRepository(
-        imageLoader: ImageLoader
-    ): ImagesRepository =
-        ImagesRepository(imageLoader)
 }

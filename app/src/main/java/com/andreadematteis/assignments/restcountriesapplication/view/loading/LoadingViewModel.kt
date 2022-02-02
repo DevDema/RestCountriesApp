@@ -56,7 +56,7 @@ class LoadingViewModel @Inject constructor(
 
             }.exceptionOrNull()?.let {
                 it.printStackTrace()
-                if(countriesRepository.getAll().isEmpty()) {
+                if (countriesRepository.getAll().isEmpty()) {
                     mutableIsLoadingDone.value = LoadingStatus.FAILED_BUT_NO_COUNTRIES
                 } else {
                     mutableIsLoadingDone.value = LoadingStatus.FAILED
@@ -137,25 +137,48 @@ class LoadingViewModel @Inject constructor(
     }
 
     private fun startWorker(countryList: List<CountryEntity>) {
-        val data = Data.Builder().apply {
+        val dataFlags = Data.Builder().apply {
+            putString(
+                DownloadImagesForCountryWorker.BASE_URL_KEY,
+                DownloadImagesForCountryWorker.FLAGS_BASE_URL
+            )
+
             countryList.forEach {
-                putString(it.id.toString(), it.flagsPng)
+                putString("${it.id}-flag", it.flagsPng)
+            }
+        }.build()
+        val dataCoats = Data.Builder().apply {
+            putString(
+                DownloadImagesForCountryWorker.BASE_URL_KEY,
+                DownloadImagesForCountryWorker.COATS_BASE_URL
+            )
+
+            countryList.forEach {
+                putString("${it.id}-coat", it.coatOfArmsPng)
             }
         }.build()
 
         WorkManager.getInstance(getApplication())
-            .beginUniqueWork(
-                "ImageDownloadWork",
-                ExistingWorkPolicy.REPLACE,
+            .beginWith(
                 OneTimeWorkRequest.Builder(DownloadImagesForCountryWorker::class.java)
                     .setConstraints(
                         Constraints.Builder()
                             .setRequiredNetworkType(NetworkType.CONNECTED)
                             .build()
                     )
-                    .setInputData(data)
+                    .setInputData(dataFlags)
                     .build()
-            ).enqueue()
+            ).then(
+                OneTimeWorkRequest.Builder(DownloadImagesForCountryWorker::class.java)
+                    .setConstraints(
+                        Constraints.Builder()
+                            .setRequiredNetworkType(NetworkType.CONNECTED)
+                            .build()
+                    )
+                    .setInputData(dataCoats)
+                    .build()
+            )
+            .enqueue()
     }
 
     private fun getCountriesToSave(

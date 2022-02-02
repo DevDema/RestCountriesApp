@@ -2,6 +2,7 @@ package com.andreadematteis.assignments.restcountriesapplication.network.service
 
 import com.andreadematteis.assignments.restcountriesapplication.model.Country
 import retrofit2.http.GET
+import java.io.InputStream
 
 interface CountriesService {
 

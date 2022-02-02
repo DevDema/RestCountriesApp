@@ -6,16 +6,15 @@ import android.content.Context
 import android.graphics.BitmapFactory
 import android.os.Build
 import android.util.Log
+import android.webkit.URLUtil
 import androidx.core.app.NotificationCompat
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.andreadematteis.assignments.restcountriesapplication.R
-import java.io.File
-import java.io.FileOutputStream
-import java.io.InputStream
-import java.net.URL
-import kotlin.math.roundToInt
+import com.andreadematteis.assignments.restcountriesapplication.utils.ImageDownloadUtils
 
+import java.io.File
+import kotlin.math.roundToInt
 
 class DownloadImagesForCountryWorker(
     private val context: Context,
@@ -23,11 +22,13 @@ class DownloadImagesForCountryWorker(
 ) : Worker(context, workerParams) {
 
     override fun doWork(): Result {
+        val baseUrl = workerParams.inputData.keyValueMap[BASE_URL_KEY]
         val toBeDownloaded = workerParams.inputData.keyValueMap
+            .filterNot { it.key == BASE_URL_KEY }
             .map { (key, value) ->
-                value as String to File(context.cacheDir, "$key.png")
+                key to value as String
             }
-            .filterNot { it.second.exists() }
+            .filterNot { File(context.cacheDir, "${it.first}.png").exists() }
 
         if (toBeDownloaded.isEmpty()) {
             return Result.success()
@@ -50,8 +51,20 @@ class DownloadImagesForCountryWorker(
         val notificationBuilder = NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
             .setOngoing(true)
             .setProgress(NOTIFICATION_PROGRESS_MAX, currentProgress.toInt(), false)
-            .setContentTitle(context.getString(R.string.downloading_country_flag_label))
-            .setContentText(context.getString(R.string.downloading_country_flag_message))
+            .setContentTitle(
+                if (baseUrl == COATS_BASE_URL) {
+                    context.getString(R.string.downloading_coats_of_arms_label)
+                } else {
+                    context.getString(R.string.downloading_country_flag_label)
+                }
+            )
+            .setContentText(
+                if (baseUrl == COATS_BASE_URL) {
+                    context.getString(R.string.downloading_coats_of_arms_message)
+                } else {
+                    context.getString(R.string.downloading_country_flag_message)
+                }
+            )
             .setLargeIcon(
                 BitmapFactory.decodeResource(
                     context.resources,
@@ -63,23 +76,31 @@ class DownloadImagesForCountryWorker(
             )
 
         notificationManager.notify(notificationId, notificationBuilder.build())
-
         val incrementProgress = NOTIFICATION_PROGRESS_MAX.toFloat() / toBeDownloaded.size.toFloat()
         toBeDownloaded.forEach {
             kotlin.runCatching {
-                val `in`: InputStream = URL(it.first).openStream()
-                val out = FileOutputStream(it.second)
-                val buffer = ByteArray(1024)
-                var len: Int
-
-                while (`in`.read(buffer).also { len = it } != -1) {
-                    out.write(buffer, 0, len)
+                if (URLUtil.isValidUrl(it.second)) {
+                    ImageDownloadUtils.downloadPng(
+                        it.second,
+                        context.cacheDir,
+                        it.first
+                    )
+                } else {
+                    ImageDownloadUtils.downloadPng(
+                        "${baseUrl}${it.second}",
+                        context.cacheDir,
+                        it.first
+                    )
                 }
 
                 currentProgress += incrementProgress
                 notificationManager.notify(
                     notificationId, notificationBuilder
-                        .setProgress(NOTIFICATION_PROGRESS_MAX, currentProgress.roundToInt(), false)
+                        .setProgress(
+                            NOTIFICATION_PROGRESS_MAX,
+                            currentProgress.roundToInt(),
+                            false
+                        )
                         .build()
                 )
             }.exceptionOrNull()?.let {
@@ -90,8 +111,12 @@ class DownloadImagesForCountryWorker(
 
                 val errorNotificationId = 9091
                 val notification = NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
-                    .setContentTitle(context.getString(R.string.download_country_flag_failed))
-                    .setContentText(context.getString(R.string.download_country_flag_failed_message))
+                    .setContentTitle(context.getString(R.string.download_failed))
+                    .setContentText(if (baseUrl == COATS_BASE_URL) {
+                        context.getString(R.string.download_coats_of_arms_failed_message)
+                    } else {
+                        context.getString(R.string.download_country_flag_failed_message)
+                    })
                     .setLargeIcon(
                         BitmapFactory.decodeResource(
                             context.resources,
@@ -118,5 +143,10 @@ class DownloadImagesForCountryWorker(
     companion object {
         private const val NOTIFICATION_CHANNEL_ID = "app_activity"
         private const val NOTIFICATION_PROGRESS_MAX = 100
+
+        const val FLAGS_BASE_URL = "https://flagcdn.com/w320/"
+        const val COATS_BASE_URL = "https://mainfacts.com/media/images/coats_of_arms/"
+        const val BASE_URL_KEY = "base_url"
+
     }
 }

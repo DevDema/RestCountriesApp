@@ -1,13 +1,13 @@
 package com.andreadematteis.assignments.restcountriesapplication.view.detailcountry
 
-import android.R
+import android.content.res.ColorStateList
 import android.content.res.TypedArray
+import android.graphics.Color
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.NavUtils
 import androidx.palette.graphics.Palette
 import com.andreadematteis.assignments.restcountriesapplication.databinding.ActivityCountryDetailsBinding
 import com.andreadematteis.assignments.restcountriesapplication.room.model.CountryEntity
@@ -36,7 +36,7 @@ class DetailCountriesActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(true)
 
-        viewModel.image.observe(this) {
+        viewModel.image.observe(this) { bitmap ->
             val colorPrimary: TypedArray =
                 obtainStyledAttributes(
                     TypedValue().data,
@@ -46,7 +46,7 @@ class DetailCountriesActivity : AppCompatActivity() {
                     )
                 )
 
-            val palette = Palette.Builder(it)
+            val palette = Palette.Builder(bitmap)
                 .generate()
 
             val color = palette.mutedSwatch?.rgb
@@ -61,7 +61,11 @@ class DetailCountriesActivity : AppCompatActivity() {
             window.statusBarColor = colorDark
 
             binding.collapsingToolbar.setContentScrimColor(color)
-            binding.headerImage.setImageBitmap(it)
+            binding.headerImage.setImageBitmap(bitmap)
+
+            if (KNOWN_BAD_CONTRAST_FLAGS.any { it == countryEntity.name }) {
+                binding.collapsingToolbar.setExpandedTitleTextColor(ColorStateList.valueOf(Color.BLACK))
+            }
         }
 
         viewModel.setCountryEntity(countryEntity)
@@ -74,10 +78,9 @@ class DetailCountriesActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.home -> {
+            android.R.id.home -> {
                 finish()
 
-                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -85,7 +88,9 @@ class DetailCountriesActivity : AppCompatActivity() {
     }
 
     companion object {
-        val ITEM_KEY_IMAGE = "ITEM_KEY_IMAGE"
+        const val ITEM_KEY_IMAGE = "ITEM_KEY_IMAGE"
         const val ITEM_KEY_COUNTRY = "ITEM_KEY_COUNTRY"
+
+        val KNOWN_BAD_CONTRAST_FLAGS = arrayOf("Afghanistan")
     }
 }

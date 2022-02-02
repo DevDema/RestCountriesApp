@@ -19,9 +19,12 @@
     <string name="exit_app_label">Exit app</string>
     <string name="search_text_field_hint">Italy, Sweden, Great Britain</string>
     <string name="downloading_country_flag_label">Downloading country flags…</string>
+    <string name="downloading_coats_of_arms_label">Downloading coats of arms…</string>
     <string name="downloading_country_flag_message">Downloading country flag images…</string>
-    <string name="download_country_flag_failed">Download failed</string>
-    <string name="download_country_flag_failed_message">Download of country flags failed. Restart app to try again.</string>
+    <string name="downloading_coats_of_arms_message">Downloading coats of arms images…</string>
+    <string name="download_failed">Download failed</string>
+    <string name="download_coats_of_arms_failed_message">Download of coats of arms failed</string>
+    <string name="download_country_flag_failed_message">Download of country flags failed</string>
     <string name="notification_channel_name">Application activity</string>
     <string name="no_country_in_filter">Sorry, it seems that no country matches your search.</string>
 </resources>

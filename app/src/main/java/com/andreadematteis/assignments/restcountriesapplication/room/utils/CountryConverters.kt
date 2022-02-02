@@ -2,7 +2,9 @@ package com.andreadematteis.assignments.restcountriesapplication.room.utils
 
 import com.andreadematteis.assignments.restcountriesapplication.model.Country
 import com.andreadematteis.assignments.restcountriesapplication.model.countryinfo.*
+
 import com.andreadematteis.assignments.restcountriesapplication.room.model.CountryEntity
+import com.andreadematteis.assignments.restcountriesapplication.worker.DownloadImagesForCountryWorker
 
 
 fun Country.toEntity(): CountryEntity = CountryEntity(
@@ -14,13 +16,17 @@ fun Country.toEntity(): CountryEntity = CountryEntity(
     capitalInfo?.latlng ?: emptyList(),
     car?.side ?: "",
     car?.signs ?: emptyList(),
-    coatOfArms?.svg ?: "",
+    coatOfArms?.png
+        ?.replace(DownloadImagesForCountryWorker.COATS_BASE_URL, "")
+        ?: "",
     continents ?: emptyList(),
     demonyms?.eng?.male ?: "",
     demonyms?.eng?.female ?: "",
     fifa ?: "",
     flag ?: "",
-    flags?.png ?: "",
+    flags?.png
+        ?.replace(DownloadImagesForCountryWorker.FLAGS_BASE_URL, "")
+        ?: "",
     independent,
     landlocked,
     latlng ?: emptyList(),
@@ -46,12 +52,12 @@ fun CountryEntity.toModel() = Country(
     capital,
     CapitalInfo(capitalLatLng),
     Car(carSide, carSigns),
-    CoatOfArms(coatOfArmsSvg),
+    CoatOfArms("${DownloadImagesForCountryWorker.COATS_BASE_URL}$coatOfArmsPng"),
     continents,
     Demonyms(DemonymEnglish(demonymMale, demonymFemale)),
     fifa,
     flagEmoji,
-    Flags(flagsPng),
+    Flags("${DownloadImagesForCountryWorker.FLAGS_BASE_URL}$flagsPng"),
     independent,
     landlocked,
     latlng,
