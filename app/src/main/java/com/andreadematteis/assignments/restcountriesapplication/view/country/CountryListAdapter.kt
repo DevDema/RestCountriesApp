@@ -112,6 +112,7 @@ class CountryListAdapter(
             }
         }
 
+        @Suppress("unchecked_cast")
         override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
             onFiltered(results!!.values as List<CountryWrapper>)
         }

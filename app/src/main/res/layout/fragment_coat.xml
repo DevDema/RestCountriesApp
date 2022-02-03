@@ -38,5 +38,18 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/coat_of_arms_image"
                 app:layout_constraintBottom_toBottomOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/coat_of_arms_missing"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                style="@style/TextAppearance.AppCompat.Medium"
+                android:textAlignment="center"
+                tools:visibility="gone"
+                android:text="@string/coat_of_arms_missing"
+                app:layout_constraintStart_toStartOf="@id/coat_of_arms_image"
+                app:layout_constraintEnd_toEndOf="@id/coat_of_arms_image"
+                app:layout_constraintTop_toTopOf="@id/coat_of_arms_image"
+                app:layout_constraintBottom_toBottomOf="@id/coat_of_arms_image" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

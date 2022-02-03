@@ -46,9 +46,13 @@ class DetailCountriesViewModel @Inject constructor(application: Application) :
         }
     }
 
-    fun loadCoat(id: Long) = viewModelScope.launch {
-        withContext(Dispatchers.IO) {
-            listenForBitmapFile("$id-coat.png", mutableCoatOfArms)
+    fun loadCoat(countryEntity: CountryEntity) = viewModelScope.launch {
+        if(countryEntity.coatOfArmsPng.isNotEmpty()) {
+            withContext(Dispatchers.IO) {
+                listenForBitmapFile("${countryEntity.id}-coat.png", mutableCoatOfArms)
+            }
+        } else {
+            mutableCoatOfArms.value = null
         }
     }
 

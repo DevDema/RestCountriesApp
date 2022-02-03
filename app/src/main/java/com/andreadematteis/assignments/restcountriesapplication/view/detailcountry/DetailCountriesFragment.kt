@@ -1,5 +1,6 @@
 package com.andreadematteis.assignments.restcountriesapplication.view.detailcountry
 
+import android.content.Context
 import android.content.res.ColorStateList
 import android.content.res.TypedArray
 import android.graphics.Bitmap
@@ -34,11 +35,23 @@ class DetailCountriesFragment : Fragment() {
     private val viewModel: DetailCountriesViewModel by viewModels()
     private val args: DetailCountriesFragmentArgs by navArgs()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
 
         this.countryEntity = args.countryEntity
         this.image = args.flag
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        viewModel.setCountryEntity(countryEntity)
+        viewModel.setFlag(
+            countryEntity.id,
+            image
+        )
+
+        viewModel.loadCoat(countryEntity)
     }
 
     override fun onCreateView(
@@ -82,7 +95,8 @@ class DetailCountriesFragment : Fragment() {
             }
         }
 
-        this.pagerAdapter = CountryPagerAdapter(childFragmentManager, lifecycle)
+        this.pagerAdapter =
+            CountryPagerAdapter(childFragmentManager, lifecycle, countryEntity.coatOfArmsPng)
         binding.pager.adapter = pagerAdapter
         TabLayoutMediator(binding.tabLayout, binding.pager) { tab, position ->
             when (position) {
@@ -99,14 +113,6 @@ class DetailCountriesFragment : Fragment() {
                 binding.tabLayout.getTabAt(it)!!.select()
             }
         }
-
-        viewModel.setCountryEntity(countryEntity)
-        viewModel.setFlag(
-            countryEntity.id,
-            image
-        )
-        viewModel.loadCoat(countryEntity.id)
-
     }
 
     private fun setupActionBar(hasBadContrast: Boolean, bitmap: Bitmap) {

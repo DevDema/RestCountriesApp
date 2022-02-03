@@ -15,9 +15,16 @@ import com.andreadematteis.assignments.restcountriesapplication.view.detailcount
 class CoatFragment : Fragment() {
 
     private lateinit var binding: FragmentCoatBinding
+    private var flagSvg: String? = null
     private val viewModel: DetailCountriesViewModel by viewModels(
         ownerProducer = { requireParentFragment() }
     )
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        flagSvg = arguments?.getString(KEY_FLAG_SVG)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,6 +41,15 @@ class CoatFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.coatOfArms.observe(viewLifecycleOwner) {
+            if(flagSvg.isNullOrEmpty()) {
+                binding.coatOfArmsImage.visibility = View.INVISIBLE
+                binding.coatOfArmsText.visibility = View.INVISIBLE
+
+                binding.coatOfArmsMissing.visibility = View.VISIBLE
+                return@observe
+            }
+
+            binding.coatOfArmsMissing.visibility = View.GONE
             binding.coatOfArmsImage.setBackgroundColor(
                 ContextCompat.getColor(
                     requireContext(),
@@ -58,11 +74,20 @@ class CoatFragment : Fragment() {
                 R.color.black_transparent
             )
         )
+
+        binding.coatOfArmsImage.visibility = View.VISIBLE
+        binding.coatOfArmsText.visibility = View.VISIBLE
+
+        binding.coatOfArmsMissing.visibility = View.GONE
     }
 
     override fun onResume() {
         super.onResume()
 
         viewModel.setViewPagerPosition(CountryPagerAdapter.FRAGMENT_COAT_POS)
+    }
+
+    companion object {
+        const val KEY_FLAG_SVG = "KEY_FLAG_SVG"
     }
 }
