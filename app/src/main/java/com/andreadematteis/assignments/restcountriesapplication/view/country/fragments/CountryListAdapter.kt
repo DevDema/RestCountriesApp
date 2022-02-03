@@ -70,22 +70,15 @@ class CountryListAdapter(
 
     fun setImage(bitmapPair: Pair<Long, Bitmap>) {
         itemsBitmapsMap
-            .asSequence()
-            .map { it.countryEntity }
             .withIndex()
-            .firstOrNull { it.value.id == bitmapPair.first }
-            ?.run { itemsBitmapsMap[index].flag = bitmapPair.second }
-
-        filteredItemsBitmapsMap
-            .asSequence()
-            .map { it.countryEntity }
-            .withIndex()
-            .firstOrNull { it.value.id == bitmapPair.first }
-            ?.run {
-                filteredItemsBitmapsMap[index].flag = bitmapPair.second
-
-                notifyItemChanged(index)
+            .firstOrNull { it.value.countryEntity.id == bitmapPair.first }
+            ?.let {
+                if(it.value.flag == null) {
+                    it.value.flag = bitmapPair.second
+                    notifyItemChanged(it.index)
+                }
             }
+
     }
 
     fun filter(string: String) {

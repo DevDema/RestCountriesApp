@@ -12,10 +12,11 @@
 
         <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/coat_of_arms_image"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/distance_from_screen"
                 android:layout_marginHorizontal="@dimen/distance_from_screen_large"
+                app:layout_constraintHeight_min="@dimen/coat_image_min_height"
                 app:layout_constraintVertical_bias="0"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

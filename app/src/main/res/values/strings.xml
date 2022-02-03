@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Restcountries Application</string>
+    <string name="app_name">WorldCountry Browser</string>
     <string name="countries_fragment_title">Countries list</string>
     <string name="dialog_loading_error_title">Could not load countries</string>
     <string name="dialog_loading_error_message">Could not load countries. Your connectivity may be down or the network unreachable.</string>

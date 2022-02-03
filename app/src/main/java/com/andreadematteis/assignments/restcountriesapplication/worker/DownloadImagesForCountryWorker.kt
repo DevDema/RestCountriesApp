@@ -28,6 +28,7 @@ class DownloadImagesForCountryWorker(
             .map { (key, value) ->
                 key to value as String
             }
+            .sortedBy { it.second }
             .filterNot { File(context.cacheDir, "${it.first}.png").exists() }
 
         if (toBeDownloaded.isEmpty()) {

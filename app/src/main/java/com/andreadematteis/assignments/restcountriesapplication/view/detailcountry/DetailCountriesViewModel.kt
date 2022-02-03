@@ -63,6 +63,10 @@ class DetailCountriesViewModel @Inject constructor(application: Application) :
                 File(getApplication<Application>().cacheDir, fileName)
 
             if (!file.exists()) {
+                withContext(Dispatchers.Main) {
+                    referenceLiveData.value = null
+                }
+
                 continue
             }
 

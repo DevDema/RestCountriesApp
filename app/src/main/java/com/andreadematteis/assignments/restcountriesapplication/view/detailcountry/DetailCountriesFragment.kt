@@ -32,12 +32,6 @@ class DetailCountriesFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.coatOfArms.observe(viewLifecycleOwner) {
-            binding.tabLayout.getTabAt(1)!!
-                .view
-                .isEnabled = it != null
-        }
-
         this.pagerAdapter = CountryPagerAdapter(childFragmentManager, lifecycle)
         binding.pager.adapter = pagerAdapter
         TabLayoutMediator(binding.tabLayout, binding.pager) { tab, position ->

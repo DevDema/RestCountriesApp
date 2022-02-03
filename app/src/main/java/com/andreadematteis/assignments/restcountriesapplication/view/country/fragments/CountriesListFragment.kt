@@ -62,8 +62,10 @@ class CountriesListFragment : Fragment(), CountryAdapterBinder {
         })
 
         viewModel.countryList.observe(viewLifecycleOwner) {
-            binding.recyclerView.adapter =
-                CountryListAdapter(requireContext().applicationContext, this, it)
+            if(binding.recyclerView.adapter == null) {
+                binding.recyclerView.adapter =
+                    CountryListAdapter(requireContext().applicationContext, this, it)
+            }
 
             viewModel.startWatchingImageCache()
         }
@@ -94,6 +96,12 @@ class CountriesListFragment : Fragment(), CountryAdapterBinder {
     override fun onNoCountry() {
         binding.noCountryLabel.visibility = View.VISIBLE
         binding.recyclerView.visibility = View.INVISIBLE
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        viewModel.getCountries()
     }
 
     override fun openDetails(countryEntity: CountryEntity, bitmap: Bitmap?) {
