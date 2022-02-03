@@ -1,11 +1,14 @@
 package com.andreadematteis.assignments.restcountriesapplication.view.country
 
+import android.R
 import android.content.Context
+import android.content.res.TypedArray
 import android.graphics.Bitmap
 import android.graphics.Rect
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +16,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.ArrayAdapter
 import android.widget.MultiAutoCompleteTextView
 import androidx.activity.OnBackPressedCallback
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -21,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.andreadematteis.assignments.restcountriesapplication.databinding.FragmentListCountriesBinding
 import com.andreadematteis.assignments.restcountriesapplication.room.model.CountryEntity
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class CountriesListFragment : Fragment(), CountryAdapterBinder {
@@ -108,7 +113,7 @@ class CountriesListFragment : Fragment(), CountryAdapterBinder {
         })
 
         viewModel.countryList.observe(viewLifecycleOwner) { list ->
-            if(binding.searchEditText.adapter == null) {
+            if (binding.searchEditText.adapter == null) {
                 binding.searchEditText.setAdapter(
                     ArrayAdapter(
                         requireContext(),
@@ -160,6 +165,16 @@ class CountriesListFragment : Fragment(), CountryAdapterBinder {
         super.onResume()
 
         viewModel.getCountries()
+
+        val typedValue = TypedValue()
+
+        val a: TypedArray =
+            requireContext()
+                .obtainStyledAttributes(typedValue.data, intArrayOf(R.attr.colorPrimaryDark))
+        val color = a.getColor(0, 0)
+
+        a.recycle()
+        activity?.window?.statusBarColor = color
     }
 
     override fun openDetails(countryEntity: CountryEntity, bitmap: Bitmap?) {

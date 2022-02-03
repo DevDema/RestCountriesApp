@@ -2,8 +2,9 @@
     <!-- Base application theme. -->
     <style name="Theme.RestCountriesApplication" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorPrimary">@color/green_500</item>
+        <item name="colorPrimaryVariant">@color/green_700</item>
+        <item name="colorPrimaryDark">?attr/colorPrimaryVariant</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
@@ -15,8 +16,9 @@
     </style>
     <style name="Theme.RestCountriesApplication.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorPrimary">@color/green_500</item>
+        <item name="colorPrimaryVariant">@color/green_700</item>
+        <item name="colorPrimaryDark">?attr/colorPrimaryVariant</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
@@ -28,6 +30,6 @@
         <!-- Customize your theme here. -->
     </style>
     <style name="Theme.RestCountriesApplication.AppBar" parent="Widget.MaterialComponents.AppBarLayout.Primary">
-        <item name="android:background">@color/light_white</item>
+        <item name="android:background">@color/green_200</item>
     </style>
 </resources>

@@ -143,7 +143,6 @@ class DetailCountriesFragment : Fragment() {
     }
 
     companion object {
-
-        val KNOWN_BAD_CONTRAST_FLAGS = arrayOf("Afghanistan", "United States", "Bulgaria")
+        val KNOWN_BAD_CONTRAST_FLAGS = arrayOf("Afghanistan", "United States", "Bulgaria", "Canada")
     }
 }
