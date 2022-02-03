@@ -1,4 +1,4 @@
-package com.andreadematteis.assignments.restcountriesapplication.view.country.fragments
+package com.andreadematteis.assignments.restcountriesapplication.view.country
 
 import android.graphics.Bitmap
 import com.andreadematteis.assignments.restcountriesapplication.room.model.CountryEntity

@@ -1,40 +1,54 @@
 package com.andreadematteis.assignments.restcountriesapplication.view.loading
 
-import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import androidx.activity.viewModels
+import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.andreadematteis.assignments.restcountriesapplication.R
-import com.andreadematteis.assignments.restcountriesapplication.databinding.ActivityLoadingBinding
+import com.andreadematteis.assignments.restcountriesapplication.databinding.FragmentLoadingBinding
 import com.andreadematteis.assignments.restcountriesapplication.utils.BitmapUtils
-import com.andreadematteis.assignments.restcountriesapplication.view.country.CountriesActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class LoadingActivity : AppCompatActivity() {
+class LoadingFragment : Fragment() {
 
     private val viewModel: LoadingViewModel by viewModels()
-    private lateinit var binding: ActivityLoadingBinding
+    private lateinit var binding: FragmentLoadingBinding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        super.onCreateView(inflater, container, savedInstanceState)
 
-        binding = ActivityLoadingBinding.inflate(layoutInflater)
+        binding = FragmentLoadingBinding.inflate(layoutInflater, container, false)
         binding.viewModel = viewModel
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
 
-        setContentView(binding.root)
+        return binding.root
+    }
 
-        binding.worldImage.setImageBitmap(BitmapUtils.bitmapFromAssets(this, "BlankMap-World.png"))
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.worldImage.setImageBitmap(
+            BitmapUtils.bitmapFromAssets(
+                requireContext(),
+                "BlankMap-World.png"
+            )
+        )
         binding.worldColoredImage.setImageBitmap(
             BitmapUtils.bitmapFromAssets(
-                this,
+                requireContext(),
                 "ColoredMap-World.png"
             )
         )
-        viewModel.isLoadingDone.observe(this) {
+        viewModel.isLoadingDone.observe(viewLifecycleOwner) {
             when (it) {
                 LoadingStatus.IN_PROGRESS -> {
                     binding.progressCircular.visibility = View.VISIBLE
@@ -56,7 +70,7 @@ class LoadingActivity : AppCompatActivity() {
 
                     viewModel.stopRandomizeText()
 
-                    AlertDialog.Builder(this)
+                    AlertDialog.Builder(requireContext())
                         .setCancelable(false)
                         .setTitle(R.string.dialog_loading_error_title)
                         .setMessage(R.string.dialog_loading_error_local_data_message)
@@ -77,7 +91,7 @@ class LoadingActivity : AppCompatActivity() {
 
                     viewModel.stopRandomizeText()
 
-                    AlertDialog.Builder(this)
+                    AlertDialog.Builder(requireContext())
                         .setCancelable(false)
                         .setTitle(R.string.dialog_loading_error_title)
                         .setMessage(R.string.dialog_loading_error_message)
@@ -89,7 +103,7 @@ class LoadingActivity : AppCompatActivity() {
                         .setNegativeButton(R.string.exit_app_label) { dialog, _ ->
                             dialog.dismiss()
 
-                            finish()
+                            activity?.finish()
                         }.show()
                 }
             }
@@ -107,8 +121,7 @@ class LoadingActivity : AppCompatActivity() {
     }
 
     private fun openCountries() {
-        startActivity(Intent(this, CountriesActivity::class.java))
-
-        finish()
+        findNavController().navigate(LoadingFragmentDirections
+            .actionLoadingFragmentToCountryFragment())
     }
 }

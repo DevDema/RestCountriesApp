@@ -17,7 +17,7 @@
     <string name="delicious_cookie_loading">Opening a delicious cookie…</string>
     <string name="countries_loading">Loading countries…</string>
     <string name="exit_app_label">Exit app</string>
-    <string name="search_text_field_hint">Italy, Sweden, Great Britain</string>
+    <string name="search_text_field_hint">Italy, Sweden, United Kingdom</string>
     <string name="downloading_country_flag_label">Downloading country flags…</string>
     <string name="downloading_coats_of_arms_label">Downloading coats of arms…</string>
     <string name="downloading_country_flag_message">Downloading country flag images…</string>
@@ -30,4 +30,6 @@
     <string name="country_info_label">Country info</string>
     <string name="coat_of_arms_label">Coat of arms</string>
     <string name="coat_of_arms_caption">%s coat of arms</string>
+    <string name="loading_title">Loading screen</string>
+    <string name="countries_details_fragment_title">Country details screen</string>
 </resources>

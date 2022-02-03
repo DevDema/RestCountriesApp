@@ -1,21 +1,25 @@
-package com.andreadematteis.assignments.restcountriesapplication.view.country.fragments
+package com.andreadematteis.assignments.restcountriesapplication.view.country
 
-import android.content.Intent
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Rect
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.widget.ArrayAdapter
+import android.widget.MultiAutoCompleteTextView
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.andreadematteis.assignments.restcountriesapplication.databinding.FragmentListCountriesBinding
 import com.andreadematteis.assignments.restcountriesapplication.room.model.CountryEntity
-import com.andreadematteis.assignments.restcountriesapplication.view.country.CountriesViewModel
-import com.andreadematteis.assignments.restcountriesapplication.view.detailcountry.DetailCountriesActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -23,7 +27,20 @@ class CountriesListFragment : Fragment(), CountryAdapterBinder {
 
     private lateinit var binding: FragmentListCountriesBinding
     private val viewModel: CountriesListViewModel by viewModels()
-    private val activityViewModel: CountriesViewModel by activityViewModels()
+    private var clickedItem = false
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        requireActivity().onBackPressedDispatcher.addCallback(
+            this,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    activity?.finish()
+                }
+
+            })
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -61,10 +78,49 @@ class CountriesListFragment : Fragment(), CountryAdapterBinder {
             }
         })
 
-        viewModel.countryList.observe(viewLifecycleOwner) {
-            if(binding.recyclerView.adapter == null) {
+
+        binding.searchEditText.setTokenizer(MultiAutoCompleteTextView.CommaTokenizer())
+        binding.searchEditText.setOnEditorActionListener { v, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                viewModel.setSearchText(v.text.toString())
+            }
+
+            return@setOnEditorActionListener false
+
+        }
+
+
+        binding.searchEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // Do nothing
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                // Do nothing
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                if (s.isNullOrEmpty()) {
+                    viewModel.setSearchText("")
+                }
+            }
+
+        })
+
+        viewModel.countryList.observe(viewLifecycleOwner) { list ->
+            binding.searchEditText.setAdapter(
+                ArrayAdapter(
+                    requireContext(),
+                    android.R.layout.simple_list_item_1,
+                    list.map {
+                        "${it.flagEmoji} ${it.name}"
+                    }
+                )
+            )
+
+            if (binding.recyclerView.adapter == null) {
                 binding.recyclerView.adapter =
-                    CountryListAdapter(requireContext().applicationContext, this, it)
+                    CountryListAdapter(requireContext().applicationContext, this, list)
             }
 
             viewModel.startWatchingImageCache()
@@ -74,7 +130,7 @@ class CountriesListFragment : Fragment(), CountryAdapterBinder {
             (binding.recyclerView.adapter as CountryListAdapter).setImage(it)
         }
 
-        activityViewModel.searchText.observe(viewLifecycleOwner) {
+        viewModel.searchText.observe(viewLifecycleOwner) {
             if (it.isNullOrBlank()) {
                 (binding.recyclerView.adapter as CountryListAdapter).restoreFilter()
             } else {
@@ -105,15 +161,10 @@ class CountriesListFragment : Fragment(), CountryAdapterBinder {
     }
 
     override fun openDetails(countryEntity: CountryEntity, bitmap: Bitmap?) {
-        startActivity(
-            Intent(
-                requireContext(),
-                DetailCountriesActivity::class.java
-            ).apply {
-                putExtra(DetailCountriesActivity.ITEM_KEY_COUNTRY, countryEntity)
-                putExtra(DetailCountriesActivity.ITEM_KEY_IMAGE, bitmap)
-            }
-        )
+        val action = CountriesListFragmentDirections
+            .actionCountryFragmentToCountryDetailsFragment(countryEntity)
+            .setFlag(bitmap)
 
+        findNavController().navigate(action)
     }
 }

@@ -12,7 +12,7 @@
             android:supportsRtl="true"
             android:theme="@style/Theme.RestCountriesApplication" >
         <activity
-                android:name=".view.loading.LoadingActivity"
+                android:name=".view.CountryActivity"
                 android:theme="@style/Theme.RestCountriesApplication.NoActionBar"
                 android:exported="true">
             <intent-filter>
@@ -20,13 +20,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-                android:name=".view.country.CountriesActivity"
-                android:theme="@style/Theme.RestCountriesApplication.NoActionBar"/>
-
-        <activity
-                android:name=".view.detailcountry.DetailCountriesActivity"
-                android:theme="@style/Theme.RestCountriesApplication.NoActionBar"/>
     </application>
 
 </manifest>

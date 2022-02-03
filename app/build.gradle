@@ -4,7 +4,7 @@ plugins {
     id 'kotlin-kapt'
     id 'kotlin-parcelize'
     id 'dagger.hilt.android.plugin'
-    id 'androidx.navigation.safeargs.kotlin'
+    id 'androidx.navigation.safeargs'
     id 'kotlin-allopen'
 }
 
@@ -84,7 +84,7 @@ dependencies {
 
     // Hilt
     implementation "com.google.dagger:hilt-android:2.38.1"
-    kapt "com.google.dagger:hilt-compiler:2.38.1" //2.40.0 has a bug
+    kapt "com.google.dagger:hilt-compiler:2.38.1" //2.40.0 has a bug while injecting fragments
 
     // Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'

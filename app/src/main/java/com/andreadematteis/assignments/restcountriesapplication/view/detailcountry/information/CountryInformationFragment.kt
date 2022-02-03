@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import com.andreadematteis.assignments.restcountriesapplication.databinding.FragmentInformationBinding
 import com.andreadematteis.assignments.restcountriesapplication.view.detailcountry.CountryPagerAdapter
 import com.andreadematteis.assignments.restcountriesapplication.view.detailcountry.DetailCountriesViewModel
@@ -13,7 +13,10 @@ import com.andreadematteis.assignments.restcountriesapplication.view.detailcount
 class CountryInformationFragment: Fragment() {
 
     private lateinit var binding: FragmentInformationBinding
-    private val viewModel: DetailCountriesViewModel by activityViewModels()
+    private val viewModel: DetailCountriesViewModel by viewModels(
+        ownerProducer = { requireParentFragment() }
+
+    )
 
     override fun onCreateView(
         inflater: LayoutInflater,

@@ -35,7 +35,7 @@ class DetailCountriesViewModel @Inject constructor(application: Application) :
         mutableCountryEntity.value = countryEntity
     }
 
-    fun setImage(id: Long, bitmap: Bitmap?) = viewModelScope.launch {
+    fun setFlag(id: Long, bitmap: Bitmap?) = viewModelScope.launch {
         bitmap?.let {
             mutableImage.value = it
             return@launch
@@ -46,7 +46,7 @@ class DetailCountriesViewModel @Inject constructor(application: Application) :
         }
     }
 
-    fun loadImage(id: Long) = viewModelScope.launch {
+    fun loadCoat(id: Long) = viewModelScope.launch {
         withContext(Dispatchers.IO) {
             listenForBitmapFile("$id-coat.png", mutableCoatOfArms)
         }

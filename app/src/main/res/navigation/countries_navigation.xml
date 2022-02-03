@@ -3,12 +3,52 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/countries_navigation"
-        app:startDestination="@id/country_fragment">
+        app:startDestination="@id/loading_fragment">
 
     <fragment
+            android:id="@+id/loading_fragment"
+            android:name="com.andreadematteis.assignments.restcountriesapplication.view.loading.LoadingFragment"
+            android:label="@string/loading_title"
+            tools:layout="@layout/fragment_loading">
+        <action
+                android:id="@+id/action_loading_fragment_to_country_fragment"
+                app:destination="@id/country_fragment"
+                app:popUpToInclusive="true"
+                app:launchSingleTop="true"
+                app:popUpTo="@id/country_fragment"
+                app:enterAnim="@anim/slide_up"
+                app:exitAnim="@anim/stationary"
+                app:popEnterAnim="@anim/stationary"
+                app:popExitAnim="@anim/slide_down" />
+    </fragment>
+    <fragment
             android:id="@+id/country_fragment"
-            android:name="com.andreadematteis.assignments.restcountriesapplication.view.country.fragments.CountriesListFragment"
+            android:name="com.andreadematteis.assignments.restcountriesapplication.view.country.CountriesListFragment"
             android:label="@string/countries_fragment_title"
             tools:layout="@layout/fragment_list_countries">
+
+        <action
+                android:id="@+id/action_country_fragment_to_country_details_fragment"
+                app:destination="@id/country_details_fragment"
+                app:enterAnim="@anim/slide_right"
+                app:exitAnim="@anim/stationary"
+                app:popEnterAnim="@anim/stationary"
+                app:popExitAnim="@anim/slide_to_right"/>
     </fragment>
+    <fragment
+            android:id="@+id/country_details_fragment"
+            android:name="com.andreadematteis.assignments.restcountriesapplication.view.detailcountry.DetailCountriesFragment"
+            android:label="@string/countries_details_fragment_title"
+            tools:layout="@layout/fragment_country_details" >
+        <argument
+                android:name="countryEntity"
+                app:argType="com.andreadematteis.assignments.restcountriesapplication.room.model.CountryEntity" />
+
+        <argument
+                android:name="flag"
+                app:argType="android.graphics.Bitmap"
+                android:defaultValue="@null"
+                app:nullable="true"/>
+    </fragment>
+
 </navigation>

@@ -1,4 +1,4 @@
-package com.andreadematteis.assignments.restcountriesapplication.view.country.fragments
+package com.andreadematteis.assignments.restcountriesapplication.view.country
 
 import android.app.Application
 import android.graphics.Bitmap
@@ -27,11 +27,14 @@ class CountriesListViewModel @Inject constructor(
 
     private val mutableIdImage = MutableLiveData<Pair<Long, Bitmap>>()
     private val mutableCountryList = MutableLiveData<List<CountryEntity>>()
+    private val mutableSearchText = MutableLiveData<String>()
 
     val countryList: LiveData<List<CountryEntity>>
         get() = mutableCountryList
     val idImage: LiveData<Pair<Long, Bitmap>>
         get() = mutableIdImage
+    val searchText: LiveData<String>
+        get() = mutableSearchText
 
     fun getCountries() {
         viewModelScope.launch {
@@ -90,5 +93,9 @@ class CountriesListViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun setSearchText(text: String) {
+        mutableSearchText.value = text
     }
 }
