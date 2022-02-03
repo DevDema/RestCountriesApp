@@ -25,20 +25,20 @@ class CountriesListViewModel @Inject constructor(
 
     private var countryEntityList = emptyList<CountryEntity>()
 
-    private val mutableIdImage = MutableLiveData<Pair<Long, Bitmap>>()
+    private val mutableIdImage = MutableLiveData<Map<Long, Bitmap>>()
     private val mutableCountryList = MutableLiveData<List<CountryEntity>>()
     private val mutableSearchText = MutableLiveData<String>()
 
     val countryList: LiveData<List<CountryEntity>>
         get() = mutableCountryList
-    val idImage: LiveData<Pair<Long, Bitmap>>
+    val idImage: LiveData<Map<Long, Bitmap>>
         get() = mutableIdImage
     val searchText: LiveData<String>
         get() = mutableSearchText
 
     fun getCountries() {
         viewModelScope.launch {
-            if(countryEntityList.isNotEmpty()) {
+            if (countryEntityList.isNotEmpty()) {
                 return@launch
             }
 
@@ -47,51 +47,59 @@ class CountriesListViewModel @Inject constructor(
             }
 
             mutableCountryList.value = countryEntityList
+
+            withContext(Dispatchers.IO) {
+                startWatchingImageCache()
+            }
         }
     }
 
-    fun startWatchingImageCache() {
-        viewModelScope.launch {
+    suspend fun startWatchingImageCache() {
+        val missingImagesCountry = countryEntityList
+            .sortedBy { it.name }
+            .map { it.id }
+        val doneList = buildList {
+            repeat(countryEntityList.size) {
+                add(false)
+            }
+        }.toMutableList()
 
-            withContext(Dispatchers.IO) {
-                val missingImagesCountry = countryEntityList.map { it.id }
-                val doneList = buildList {
-                    repeat(countryEntityList.size) {
-                        add(false)
-                    }
-                }.toMutableList()
+        val finalMap = mutableMapOf<Long, Bitmap>()
 
-                while (true) {
-                    if(doneList.all { it }) {
-                        break
-                    }
+        while (true) {
+            if (doneList.all { it }) {
+                break
+            }
 
-                    for (countryIdIndexed in missingImagesCountry.withIndex()) {
-                        if(doneList[countryIdIndexed.index]) {
-                            continue
+            for (countryIdIndexed in missingImagesCountry.withIndex()) {
+                if (doneList[countryIdIndexed.index]) {
+                    continue
+                }
+
+                val file = File(
+                    getApplication<Application>().cacheDir,
+                    "${countryIdIndexed.value}-flag.png"
+                )
+                if (!file.exists()) {
+                    continue
+                }
+
+                BitmapFactory.decodeFile(
+                    file.absolutePath
+                )?.let {
+                    withContext(Dispatchers.Main) {
+                        mutableIdImage.value = finalMap.apply {
+                            put(countryIdIndexed.value, it)
                         }
 
-                        val file = File(getApplication<Application>().cacheDir, "${countryIdIndexed.value}-flag.png")
-                        if (!file.exists()) {
-                            continue
-                        }
 
-                        BitmapFactory.decodeFile(
-                            file.absolutePath
-                        )?.let {
-                            withContext(Dispatchers.Main) {
-                                mutableIdImage.value =
-                                    countryIdIndexed.value to it
-
-                            }
-
-                            doneList[countryIdIndexed.index] = true
-                        }
                     }
 
-                    delay(200)
+                    doneList[countryIdIndexed.index] = true
                 }
             }
+
+            delay(200)
         }
     }
 

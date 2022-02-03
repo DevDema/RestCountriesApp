@@ -70,13 +70,14 @@ class CountryListAdapter(
 
     fun setImage(bitmapPair: Pair<Long, Bitmap>) {
         itemsBitmapsMap
+            .asSequence()
             .withIndex()
+            .filter { it.value.flag == null }
             .firstOrNull { it.value.countryEntity.id == bitmapPair.first }
             ?.let {
-                if(it.value.flag == null) {
-                    it.value.flag = bitmapPair.second
-                    notifyItemChanged(it.index)
-                }
+                it.value.flag = bitmapPair.second
+                notifyItemChanged(it.index)
+
             }
 
     }
@@ -118,7 +119,7 @@ class CountryListAdapter(
     }
 
     override fun getFilter() = FilterCountry(itemsBitmapsMap) { newList ->
-        if(newList.isEmpty()) {
+        if (newList.isEmpty()) {
             binder.onNoCountry()
         } else {
             binder.onCountryResults(newList)

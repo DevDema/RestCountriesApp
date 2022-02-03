@@ -32,7 +32,6 @@ class CountriesListFragment : Fragment(), CountryAdapterBinder {
 
     private lateinit var binding: FragmentListCountriesBinding
     private val viewModel: CountriesListViewModel by viewModels()
-    private var clickedItem = false
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -45,6 +44,12 @@ class CountriesListFragment : Fragment(), CountryAdapterBinder {
                 }
 
             })
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        viewModel.getCountries()
     }
 
     override fun onCreateView(
@@ -117,7 +122,7 @@ class CountriesListFragment : Fragment(), CountryAdapterBinder {
                 binding.searchEditText.setAdapter(
                     ArrayAdapter(
                         requireContext(),
-                        android.R.layout.simple_list_item_1,
+                        R.layout.simple_list_item_1,
                         list.map {
                             "${it.flagEmoji} ${it.name}"
                         }
@@ -129,12 +134,12 @@ class CountriesListFragment : Fragment(), CountryAdapterBinder {
                 binding.recyclerView.adapter =
                     CountryListAdapter(requireContext().applicationContext, this, list)
             }
-
-            viewModel.startWatchingImageCache()
         }
 
-        viewModel.idImage.observe(viewLifecycleOwner) {
-            (binding.recyclerView.adapter as CountryListAdapter).setImage(it)
+        viewModel.idImage.observe(viewLifecycleOwner) { map ->
+            map.forEach {
+                (binding.recyclerView.adapter as CountryListAdapter).setImage(it.toPair())
+            }
         }
 
         viewModel.searchText.observe(viewLifecycleOwner) {
@@ -147,8 +152,6 @@ class CountriesListFragment : Fragment(), CountryAdapterBinder {
 
         binding.noCountryLabel.visibility = View.GONE
         binding.recyclerView.visibility = View.VISIBLE
-
-        viewModel.getCountries()
     }
 
     override fun onCountryResults(countryEntities: List<CountryWrapper>) {
@@ -163,8 +166,6 @@ class CountriesListFragment : Fragment(), CountryAdapterBinder {
 
     override fun onResume() {
         super.onResume()
-
-        viewModel.getCountries()
 
         val typedValue = TypedValue()
 

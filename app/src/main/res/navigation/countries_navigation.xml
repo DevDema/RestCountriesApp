@@ -49,6 +49,9 @@
                 app:argType="android.graphics.Bitmap"
                 android:defaultValue="@null"
                 app:nullable="true"/>
+        <action
+                android:id="@+id/action_country_details_fragment_to_country_fragment"
+                app:destination="@id/country_fragment" />
     </fragment>
 
 </navigation>
