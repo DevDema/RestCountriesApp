@@ -13,7 +13,7 @@ data class Country(
     val altSpellings: List<String>?,
     @SerializedName("area")
     @Expose
-    val area: Double,
+    val area: Float,
     @SerializedName("borders")
     @Expose
     val borders: List<String>?,

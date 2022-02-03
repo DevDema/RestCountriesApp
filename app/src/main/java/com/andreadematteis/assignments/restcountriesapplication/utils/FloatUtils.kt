@@ -8,7 +8,16 @@ fun Float.toTwoDecimals(): Float = DecimalFormat("#.##").apply {
     roundingMode = RoundingMode.FLOOR
     decimalFormatSymbols = DecimalFormatSymbols().apply {
         decimalSeparator = '.'
+        groupingSeparator = ' '
     }
 }
     .format(this)
     .toFloat()
+
+fun Float.toReadable(): String = DecimalFormat("###,###.##").apply {
+    roundingMode = RoundingMode.FLOOR
+    decimalFormatSymbols = DecimalFormatSymbols().apply {
+        decimalSeparator = '.'
+        groupingSeparator = ' '
+    }
+}.format(this)

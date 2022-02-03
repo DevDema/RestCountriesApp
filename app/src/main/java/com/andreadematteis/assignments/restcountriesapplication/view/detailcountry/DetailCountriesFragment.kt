@@ -9,6 +9,7 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -62,9 +63,22 @@ class DetailCountriesFragment : Fragment() {
             findNavController().popBackStack()
         }
 
+        val hasBadContrast = KNOWN_BAD_CONTRAST_FLAGS.any { it.startsWith(countryEntity.name) }
+
+        binding.toolbar.navigationIcon?.setTint(
+
+            ContextCompat.getColor(
+                requireContext(),
+                if (hasBadContrast)
+                    R.color.black
+                else
+                    R.color.white
+            )
+        )
+
         viewModel.image.observe(viewLifecycleOwner) {
             it?.let { bitmap ->
-                setupActionBar(countryEntity, bitmap)
+                setupActionBar(hasBadContrast, bitmap)
             }
         }
 
@@ -81,7 +95,7 @@ class DetailCountriesFragment : Fragment() {
         }.attach()
 
         viewModel.viewPagerPosition.observe(viewLifecycleOwner) {
-            if(binding.tabLayout.selectedTabPosition != it) {
+            if (binding.tabLayout.selectedTabPosition != it) {
                 binding.tabLayout.getTabAt(it)!!.select()
             }
         }
@@ -95,7 +109,7 @@ class DetailCountriesFragment : Fragment() {
 
     }
 
-    private fun setupActionBar(countryEntity: CountryEntity, bitmap: Bitmap) {
+    private fun setupActionBar(hasBadContrast: Boolean, bitmap: Bitmap) {
         val colorPrimary: TypedArray =
             requireContext().obtainStyledAttributes(
                 TypedValue().data,
@@ -122,7 +136,7 @@ class DetailCountriesFragment : Fragment() {
         binding.collapsingToolbar.setContentScrimColor(color)
         binding.headerImage.setImageBitmap(bitmap)
 
-        if (KNOWN_BAD_CONTRAST_FLAGS.any { it == countryEntity.name }) {
+        if (hasBadContrast) {
             binding.collapsingToolbar.setExpandedTitleTextColor(ColorStateList.valueOf(Color.BLACK))
         }
 
@@ -130,6 +144,6 @@ class DetailCountriesFragment : Fragment() {
 
     companion object {
 
-        val KNOWN_BAD_CONTRAST_FLAGS = arrayOf("Afghanistan")
+        val KNOWN_BAD_CONTRAST_FLAGS = arrayOf("Afghanistan", "United States", "Bulgaria")
     }
 }

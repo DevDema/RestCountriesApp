@@ -85,5 +85,19 @@
                 app:layout_constraintBottom_toBottomOf="parent"
 
                 tools:text="Loading countries information..." />
+        <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/courtesy_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/courtesy_label"
+                android:textStyle="italic"
+                style="@style/TextAppearance.MaterialComponents.Caption"
+                android:layout_marginBottom="@dimen/distance_from_screen"
+                app:layout_constraintVertical_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="@id/progress_circular"
+                app:layout_constraintEnd_toEndOf="@id/progress_circular"
+                app:layout_constraintTop_toBottomOf="@id/progress_circular"
+                app:layout_constraintVertical_bias="1"
+                app:layout_constraintBottom_toBottomOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

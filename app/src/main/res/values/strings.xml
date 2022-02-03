@@ -32,4 +32,17 @@
     <string name="coat_of_arms_caption">%s coat of arms</string>
     <string name="loading_title">Loading screen</string>
     <string name="countries_details_fragment_title">Country details screen</string>
+    <string name="population_label">Population</string>
+    <string name="native_name_label">Native name</string>
+    <string name="continent_label">Continents</string>
+    <string name="demonym_male_label">Male demonym</string>
+    <string name="demonym_female_label">Female demonym</string>
+    <string name="timezones_label">Timezones</string>
+    <string name="area_square_label">Area (m²)</string>
+    <string name="capital_item">Capital</string>
+    <string name="borders_label">Borders</string>
+    <string name="car_side_label">Car side</string>
+    <string name="official_name_label">Official name</string>
+    <string name="courtesy_label">Data courtesy of restcountries.com</string>
+    <string name="un_member_caption">UN member</string>
 </resources>

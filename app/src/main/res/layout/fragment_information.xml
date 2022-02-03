@@ -1,13 +1,232 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+                name="countryEntity"
+                type="com.andreadematteis.assignments.restcountriesapplication.room.model.CountryEntity" />
+    </data>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:background="@android:color/transparent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+        <com.andreadematteis.assignments.restcountriesapplication.utils.view.ListItemView
+                android:id="@+id/native_name_item"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/distance_from_screen"
+                tools:title="Italia"
+
+                app:is_clickable="true"
+                app:subtitle="@string/native_name_label"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/un_logo"
+                app:layout_constraintTop_toTopOf="@id/un_logo"
+                app:layout_constraintBottom_toBottomOf="@id/un_logo"/>
+
+        <com.andreadematteis.assignments.restcountriesapplication.utils.view.ListItemView
+                android:id="@+id/official_name_item"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/distance_from_screen"
+                tools:title="Democratic Republic of Italy"
+                android:layout_marginTop="@dimen/margin_small"
+                app:title="@{countryEntity.officialName}"
+                app:is_clickable="true"
+                app:subtitle="@string/official_name_label"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/un_logo_caption"
+                app:layout_constraintBottom_toTopOf="@id/divider_first_block"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/un_logo"
+                android:layout_width="@dimen/un_logo_size"
+                android:layout_height="@dimen/un_logo_size"
+                android:layout_marginEnd="@dimen/distance_from_screen"
+                android:layout_marginTop="@dimen/margin_medium"
+                app:layout_constraintStart_toEndOf="@id/native_name_item"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/un_logo_caption"
+                />
+
+        <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/un_logo_caption"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/distance_from_screen"
+                tools:title="Democratic Republic of Italy"
+                android:layout_marginTop="@dimen/margin_very_small"
+                tools:visibility="invisible"
+                android:text="@string/un_member_caption"
+                style="@style/TextAppearance.MaterialComponents.Caption"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="@id/un_logo"
+                app:layout_constraintEnd_toEndOf="@id/un_logo"
+                app:layout_constraintTop_toBottomOf="@id/un_logo"
+                app:layout_constraintBottom_toTopOf="@id/official_name_item"/>
+        <View
+                android:id="@+id/divider_first_block"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@color/gray"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:visibility="visible"
+                android:layout_marginHorizontal="@dimen/distance_from_screen"
+                app:layout_constraintVertical_bias="1"
+                app:layout_constraintTop_toBottomOf="@id/official_name_item"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/capital_item"/>
+
+        <com.andreadematteis.assignments.restcountriesapplication.utils.view.ListItemView
+                android:id="@+id/capital_item"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/distance_from_screen"
+                tools:title="Rome"
+                android:layout_marginTop="@dimen/margin_medium"
+                app:is_clickable="true"
+                app:subtitle="@string/capital_item"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/divider_first_block"
+                app:layout_constraintBottom_toTopOf="@id/population_item"/>
+
+        <com.andreadematteis.assignments.restcountriesapplication.utils.view.ListItemView
+                android:id="@+id/population_item"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/distance_from_screen"
+                tools:title="2 123 495"
+                app:is_clickable="true"
+                app:subtitle="@string/population_label"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/capital_item"
+                app:layout_constraintBottom_toTopOf="@id/area_item"/>
+
+        <com.andreadematteis.assignments.restcountriesapplication.utils.view.ListItemView
+                android:id="@+id/area_item"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/distance_from_screen"
+                tools:title="450 096"
+                app:is_clickable="true"
+                app:subtitle="@string/area_square_label"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/population_item"
+                app:layout_constraintBottom_toTopOf="@id/continent_item"/>
+
+        <com.andreadematteis.assignments.restcountriesapplication.utils.view.ListItemView
+                android:id="@+id/continent_item"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/distance_from_screen"
+                android:layout_marginBottom="@dimen/margin_medium"
+                tools:title="Europe"
+                app:is_clickable="true"
+                app:subtitle="@string/continent_label"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/area_item"
+                app:layout_constraintBottom_toTopOf="@id/demonym_male_item"/>
+        <com.andreadematteis.assignments.restcountriesapplication.utils.view.ListItemView
+                android:id="@+id/demonym_male_item"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/distance_from_screen"
+                tools:title="Italian"
+                android:layout_marginVertical="@dimen/margin_medium"
+
+                app:is_clickable="true"
+                app:title="@{countryEntity.demonymMale}"
+                app:divider_top="true"
+                app:subtitle="@string/demonym_male_label"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/demonym_female_item"
+                app:layout_constraintTop_toBottomOf="@id/continent_item"
+                app:layout_constraintBottom_toTopOf="@id/timezones_item"/>
+
+        <com.andreadematteis.assignments.restcountriesapplication.utils.view.ListItemView
+                android:id="@+id/demonym_female_item"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/distance_from_screen"
+                tools:title="Italian"
+
+                app:divider_top="true"
+                app:is_clickable="true"
+
+                app:title="@{countryEntity.demonymFemale}"
+                app:subtitle="@string/demonym_female_label"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toEndOf="@id/demonym_male_item"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/demonym_male_item"
+                app:layout_constraintBottom_toBottomOf="@id/demonym_male_item"/>
+
+        <com.andreadematteis.assignments.restcountriesapplication.utils.view.ListItemView
+                android:id="@+id/timezones_item"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/distance_from_screen"
+                tools:title="UTC+1"
+                app:is_clickable="true"
+
+                app:subtitle="@string/timezones_label"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/demonym_male_item"
+                />
+
+        <com.andreadematteis.assignments.restcountriesapplication.utils.view.ListItemView
+                android:id="@+id/borders_item"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/distance_from_screen"
+                tools:title="France, Austria, Switzerland, Romania"
+                app:is_clickable="true"
+
+                app:subtitle="@string/borders_label"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/timezones_item"
+                app:layout_constraintBottom_toTopOf="@id/car_side_item"
+                />
+        <com.andreadematteis.assignments.restcountriesapplication.utils.view.ListItemView
+                android:id="@+id/car_side_item"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/distance_from_screen"
+                android:layout_marginBottom="@dimen/distance_from_screen"
+                tools:title="Right"
+                app:is_clickable="true"
+                app:icon_drawable="@drawable/ic_baseline_directions_car_24"
+                app:subtitle="@string/car_side_label"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/borders_item"
+                />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>
+</layout>

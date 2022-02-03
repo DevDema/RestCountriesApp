@@ -20,7 +20,7 @@ data class CountryEntity(
     @ColumnInfo(name = "alt_spellings")
     val altSpellings: List<String>,
     @ColumnInfo(name = "area")
-    val area: Double,
+    val area: Float,
     @ColumnInfo(name = "borders")
     val borders: List<String>,
     @ColumnInfo(name = "capital")
