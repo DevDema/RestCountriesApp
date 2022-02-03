@@ -108,15 +108,17 @@ class CountriesListFragment : Fragment(), CountryAdapterBinder {
         })
 
         viewModel.countryList.observe(viewLifecycleOwner) { list ->
-            binding.searchEditText.setAdapter(
-                ArrayAdapter(
-                    requireContext(),
-                    android.R.layout.simple_list_item_1,
-                    list.map {
-                        "${it.flagEmoji} ${it.name}"
-                    }
+            if(binding.searchEditText.adapter == null) {
+                binding.searchEditText.setAdapter(
+                    ArrayAdapter(
+                        requireContext(),
+                        android.R.layout.simple_list_item_1,
+                        list.map {
+                            "${it.flagEmoji} ${it.name}"
+                        }
+                    )
                 )
-            )
+            }
 
             if (binding.recyclerView.adapter == null) {
                 binding.recyclerView.adapter =
