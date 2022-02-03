@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="distance_from_screen">20dp</dimen>
+    <dimen name="distance_from_screen_large">70dp</dimen>
     <dimen name="loading_map_max_height">200dp</dimen>
     <dimen name="margin_small">10dp</dimen>
     <dimen name="margin_medium">15dp</dimen>

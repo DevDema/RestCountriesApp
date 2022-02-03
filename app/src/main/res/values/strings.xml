@@ -27,4 +27,7 @@
     <string name="download_country_flag_failed_message">Download of country flags failed</string>
     <string name="notification_channel_name">Application activity</string>
     <string name="no_country_in_filter">Sorry, it seems that no country matches your search.</string>
+    <string name="country_info_label">Country info</string>
+    <string name="coat_of_arms_label">Coat of arms</string>
+    <string name="coat_of_arms_caption">%s coat of arms</string>
 </resources>

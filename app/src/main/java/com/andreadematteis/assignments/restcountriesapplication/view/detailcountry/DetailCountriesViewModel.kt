@@ -17,46 +17,68 @@ import javax.inject.Inject
 class DetailCountriesViewModel @Inject constructor(application: Application) :
     AndroidViewModel(application) {
 
-    private val mutableImage = MutableLiveData<Bitmap>()
+    private val mutableImage = MutableLiveData<Bitmap?>()
+    private val mutableCoatOfArms = MutableLiveData<Bitmap?>()
     private val mutableCountryEntity = MutableLiveData<CountryEntity>()
+    private val mutableViewPagerPosition = MutableLiveData<Int>()
 
-    val image: LiveData<Bitmap>
+    val image: LiveData<Bitmap?>
         get() = mutableImage
     val countryEntity: LiveData<CountryEntity>
         get() = mutableCountryEntity
+    val coatOfArms: LiveData<Bitmap?>
+        get() = mutableCoatOfArms
+    val viewPagerPosition: LiveData<Int>
+        get() = mutableViewPagerPosition
 
     fun setCountryEntity(countryEntity: CountryEntity) = viewModelScope.launch {
         mutableCountryEntity.value = countryEntity
     }
 
     fun setImage(id: Long, bitmap: Bitmap?) = viewModelScope.launch {
-        if (bitmap != null) {
-            mutableImage.value = bitmap!!
-        } else {
-            withContext(Dispatchers.IO) {
-                while (true) {
-                    delay(1000)
-
-                    val file =
-                        File(getApplication<Application>().cacheDir, "$id.png")
-
-                    if (!file.exists()) {
-                        continue
-                    }
-
-                    BitmapFactory.decodeFile(
-                        file.absolutePath
-                    )?.let {
-                        withContext(Dispatchers.Main) {
-                            mutableImage.value = it
-                        }
-                    }
-
-                    break
-                }
-            }
+        bitmap?.let {
+            mutableImage.value = it
+            return@launch
         }
 
+        withContext(Dispatchers.IO) {
+            listenForBitmapFile("$id-flag.png", mutableImage)
+        }
     }
 
+    fun loadImage(id: Long) = viewModelScope.launch {
+        withContext(Dispatchers.IO) {
+            listenForBitmapFile("$id-coat.png", mutableCoatOfArms)
+        }
+    }
+
+    private suspend fun listenForBitmapFile(
+        fileName: String,
+        referenceLiveData: MutableLiveData<Bitmap?>
+    ) {
+        while (true) {
+            delay(1000)
+
+            val file =
+                File(getApplication<Application>().cacheDir, fileName)
+
+            if (!file.exists()) {
+                continue
+            }
+
+            BitmapFactory.decodeFile(
+                file.absolutePath
+            )?.let {
+                withContext(Dispatchers.Main) {
+                    referenceLiveData.value = it
+                }
+            }
+
+            break
+        }
+    }
+
+    fun setViewPagerPosition(position: Int) {
+        mutableViewPagerPosition.value = position
+    }
 }
