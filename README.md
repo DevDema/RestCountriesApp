@@ -13,17 +13,14 @@ This application shows first a loading screen.
 Afterwards, the application moves you to the countries full list, where you can filter the countries you want.\
 By clicking on a specific country, you move to the details of that specific country.
 
-Loading screen:
+Loading screen and notifications:\
 ![Loading screen](screenshots/loading.png)
-
-Notifications of downloads:
 ![Two notifications](screenshots/notifications.png)
 
-List of countries:
+List of countries and details:\
 ![Various countries in cards](screenshots/list.png)
-
-Details of a country screen:
 ![Italy details](screenshots/details.png)
+
 ## Project structure
 
 This project follows MVVM clean architecture principles and structure. It contains:
