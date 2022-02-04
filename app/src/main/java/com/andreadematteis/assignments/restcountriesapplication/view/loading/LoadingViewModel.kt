@@ -143,7 +143,9 @@ class LoadingViewModel @Inject constructor(
                 DownloadImagesForCountryWorker.FLAGS_BASE_URL
             )
 
-            countryList.forEach {
+            countryList
+
+                .forEach {
                 putString("${it.id}-flag", it.flagsPng)
             }
         }.build()
@@ -186,11 +188,12 @@ class LoadingViewModel @Inject constructor(
         savedCountryEntityList: List<CountryEntity>
     ): List<Country> {
         val savedCountryList = savedCountryEntityList.map { it.toModel() }
-        val zipped = countryList
+        val modified = countryList
             .zip(savedCountryList)
-        val modified = zipped
+            .asSequence()
             .filter { pair -> pair.first != pair.second }
             .map { it.first }
+            .toList()
         val added = countryList - savedCountryList
         return added + modified
     }

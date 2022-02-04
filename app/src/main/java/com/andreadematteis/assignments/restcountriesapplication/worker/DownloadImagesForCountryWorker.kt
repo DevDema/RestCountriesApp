@@ -3,11 +3,12 @@ package com.andreadematteis.assignments.restcountriesapplication.worker
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
-import android.graphics.BitmapFactory
 import android.os.Build
 import android.util.Log
 import android.webkit.URLUtil
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toBitmap
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.andreadematteis.assignments.restcountriesapplication.R
@@ -24,12 +25,13 @@ class DownloadImagesForCountryWorker(
     override fun doWork(): Result {
         val baseUrl = workerParams.inputData.keyValueMap[BASE_URL_KEY]
         val toBeDownloaded = workerParams.inputData.keyValueMap
+            .asSequence()
             .filterNot { it.key == BASE_URL_KEY }
             .map { (key, value) ->
                 key to value as String
             }
-            .sortedBy { it.second }
             .filterNot { File(context.cacheDir, "${it.first}.png").exists() }
+            .toList()
 
         if (toBeDownloaded.isEmpty()) {
             return Result.success()
@@ -47,6 +49,10 @@ class DownloadImagesForCountryWorker(
             notificationManager.createNotificationChannel(notificationChannel)
         }
 
+        val bitmap = ContextCompat.getDrawable(
+            context,
+            R.mipmap.ic_launcher_foreground
+        )!!.toBitmap(256, 256)
         var currentProgress = 0F
         val notificationId = 5069
         val notificationBuilder = NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
@@ -66,15 +72,8 @@ class DownloadImagesForCountryWorker(
                     context.getString(R.string.downloading_country_flag_message)
                 }
             )
-            .setLargeIcon(
-                BitmapFactory.decodeResource(
-                    context.resources,
-                    android.R.drawable.stat_sys_download
-                )
-            )
-            .setSmallIcon(
-                android.R.drawable.stat_sys_download
-            )
+            .setLargeIcon(bitmap)
+            .setSmallIcon(android.R.drawable.stat_sys_download)
 
         notificationManager.notify(notificationId, notificationBuilder.build())
         val incrementProgress = NOTIFICATION_PROGRESS_MAX.toFloat() / toBeDownloaded.size.toFloat()
@@ -113,20 +112,15 @@ class DownloadImagesForCountryWorker(
                 val errorNotificationId = 9091
                 val notification = NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
                     .setContentTitle(context.getString(R.string.download_failed))
-                    .setContentText(if (baseUrl == COATS_BASE_URL) {
-                        context.getString(R.string.download_coats_of_arms_failed_message)
-                    } else {
-                        context.getString(R.string.download_country_flag_failed_message)
-                    })
-                    .setLargeIcon(
-                        BitmapFactory.decodeResource(
-                            context.resources,
-                            android.R.drawable.stat_sys_download_done
-                        )
+                    .setContentText(
+                        if (baseUrl == COATS_BASE_URL) {
+                            context.getString(R.string.download_coats_of_arms_failed_message)
+                        } else {
+                            context.getString(R.string.download_country_flag_failed_message)
+                        }
                     )
-                    .setSmallIcon(
-                        android.R.drawable.stat_sys_download_done
-                    )
+                    .setLargeIcon(bitmap)
+                    .setSmallIcon(android.R.drawable.stat_sys_download_done)
                     .build()
 
                 notificationManager.notify(errorNotificationId, notification)
@@ -136,6 +130,21 @@ class DownloadImagesForCountryWorker(
         }
 
         notificationManager.cancel(notificationId)
+
+        val notificationDoneId = 47
+        val notification = NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
+            .setContentTitle(context.getString(R.string.download_success))
+            .setContentText(
+                if (baseUrl == COATS_BASE_URL)
+                    context.getString(R.string.download_coats_success_message)
+                else
+                    context.getString(R.string.download_flags_success_message)
+            )
+            .setLargeIcon(bitmap)
+            .setSmallIcon(R.drawable.ic_baseline_file_download_done_24)
+            .build()
+
+        notificationManager.notify(notificationDoneId, notification)
 
         return Result.success()
 

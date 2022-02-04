@@ -106,6 +106,7 @@ class LoadingFragment : Fragment() {
                             activity?.finish()
                         }.show()
                 }
+                else -> error("Enum null because of Java")
             }
         }
 
