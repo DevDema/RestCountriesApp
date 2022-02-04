@@ -28,7 +28,7 @@ This project uses _safeArgs_ to pass data between navigation destinations.
 
 ## Data Logic
 
-At the firstapp start, all countries information is downloaded from restcountries.com, and then saved as it is in the Room local DB.\ 
+At the firstapp start, all countries information is downloaded from restcountries.com, and then saved as it is in the Room local DB.\
 This allows the app also to work without an internet connection in the device.\
 After downloading simple country data, the heavy logic of downloading flags and coats of arms is done by two subsequents WorkManagers.\
 Image data is saved in the cache folder.
